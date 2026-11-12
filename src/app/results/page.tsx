@@ -16,6 +16,14 @@ export const metadata: Metadata = {
     description:
       "Measurable marketing, reported clearly: reach, traffic sources and leads, exactly as our clients see them.",
     url: "/results",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ZUHAYN - Creative & IT Solutions, Dhaka",
+      },
+    ],
   },
 };
 

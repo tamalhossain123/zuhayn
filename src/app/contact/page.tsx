@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     description:
       "Tell us about your project, a new brand, a campaign, a website, and we'll take it from there.",
     url: "/contact",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ZUHAYN - Creative & IT Solutions, Dhaka",
+      },
+    ],
   },
 };
 

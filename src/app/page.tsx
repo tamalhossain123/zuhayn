@@ -18,6 +18,14 @@ export const metadata: Metadata = {
     description:
       "We grow brands with bold digital marketing, creative design, branding and websites. ZUHAYN is a Dhaka-based creative & IT solutions agency serving clients worldwide.",
     url: "/",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ZUHAYN - Creative & IT Solutions, Dhaka",
+      },
+    ],
   },
 };
 

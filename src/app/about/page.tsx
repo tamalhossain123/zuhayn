@@ -16,6 +16,14 @@ export const metadata: Metadata = {
     description:
       "The agency behind ambitious brands. One Dhaka team for your design and your growth, since 2020.",
     url: "/about",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ZUHAYN - Creative & IT Solutions, Dhaka",
+      },
+    ],
   },
 };
 

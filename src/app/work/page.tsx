@@ -17,6 +17,14 @@ export const metadata: Metadata = {
     description:
       "Design samples that sell, for businesses that sell products, fashion, food, construction and electronics.",
     url: "/work",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ZUHAYN - Creative & IT Solutions, Dhaka",
+      },
+    ],
   },
 };
 
