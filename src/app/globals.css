@@ -244,6 +244,8 @@ main > section:nth-of-type(even) { background: #060606; }
 .feat { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-bottom: 26px; background: var(--panel); }
 .feat-visual { position: relative; min-height: 340px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #0e0e0e; }
 .feat-visual > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.feat-visual .fv-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+.feat-visual::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(4,4,4,.40), rgba(4,4,4,.68)); }
 .feat-visual .fv-in { position: relative; z-index: 2; text-align: center; padding: 48px 24px; }
 .feat-visual .fv-offer { display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; background: #fff; color: #000; padding: 6px 16px; border-radius: 999px; margin-bottom: 18px; }
 .feat-visual h3 { font-size: clamp(2rem, 4.6vw, 3.6rem); font-weight: 800; text-transform: uppercase; line-height: 1.05; text-shadow: 0 4px 34px rgba(0,0,0,.65); }

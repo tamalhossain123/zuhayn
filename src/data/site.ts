@@ -155,6 +155,7 @@ export const CLIENTS: Client[] = [
 
 export type WorkSample = {
   id: string;
+  photo: string;
   /** original ad-stage modifier class: ad-fashion | ad-food | ad-build | ad-tech */
   stage: string;
   /** index into SVG_ART for the stage artwork */
@@ -173,6 +174,7 @@ export type WorkSample = {
 export const WORK: WorkSample[] = [
   {
     id: "vastra",
+    photo: "/work/work-1.jpg",
     stage: "ad-fashion",
     art: 28,
     logo: "Vastra · Fashion",
@@ -187,6 +189,7 @@ export const WORK: WorkSample[] = [
   },
   {
     id: "khanas",
+    photo: "/work/work-2.jpg",
     stage: "ad-food",
     art: 29,
     logo: "Khana's Kitchen",
@@ -201,6 +204,7 @@ export const WORK: WorkSample[] = [
   },
   {
     id: "arab-builders",
+    photo: "/work/work-3.jpg",
     stage: "ad-build",
     art: 30,
     logo: "Arab Builders",
@@ -215,6 +219,7 @@ export const WORK: WorkSample[] = [
   },
   {
     id: "gadget-zone",
+    photo: "/work/work-4.jpg",
     stage: "ad-tech",
     art: 31,
     logo: "Gadget Zone",

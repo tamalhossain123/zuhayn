@@ -119,7 +119,7 @@ export function FeatureWork({ work }: { work: WorkSample }) {
   return (
     <Reveal as="article" className="feat">
       <div className="feat-visual">
-        <SvgArt index={work.art} />
+        <Image className="fv-photo" src={work.photo} alt="" width={1240} height={620} />
         <span className="fv-brand">{work.logo}</span>
         <div className="fv-in">
           <span className="fv-offer">{work.offer}</span>
@@ -489,9 +489,9 @@ const STATEMENT =
 
 const FF_CARDS = [
   { label: "Founded In Dhaka", value: "2020", suffix: "", photo: "/founder.jpg", always: true },
-  { label: "Happy Clients", value: "100", suffix: "+", photo: "/hero-bg.jpg", always: false },
-  { label: "Core Services", value: "9", suffix: "+", photo: "/founder.jpg", always: false },
-  { label: "Key Industries", value: "4", suffix: "+", photo: "/hero-bg.jpg", always: false },
+  { label: "Happy Clients", value: "100", suffix: "+", photo: "/about/stat-2.jpg", always: false },
+  { label: "Core Services", value: "9", suffix: "+", photo: "/about/stat-3.jpg", always: false },
+  { label: "Key Industries", value: "4", suffix: "+", photo: "/about/stat-4.jpg", always: false },
 ];
 
 export function AboutShowcase() {

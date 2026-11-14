@@ -1,5 +1,5 @@
 import type { WorkSample } from "@/data/site";
-import SvgArt from "./SvgArt";
+import Image from "next/image";
 import Reveal from "./Reveal";
 
 /** Original-design work card: coloured ad stage with the original
@@ -9,7 +9,7 @@ export default function AdCard({ work }: { work: WorkSample }) {
   return (
     <Reveal as="figure" className="ad-card">
       <div className={`ad-stage ${work.stage}`}>
-        <SvgArt index={work.art} />
+        <Image className="ad-photo" src={work.photo} alt="" width={620} height={620} />
         <div className="ad-brand">
           <span className="ad-logo">{work.logo}</span>
           <span className="ad-offer">{work.offer}</span>
