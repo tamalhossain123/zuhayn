@@ -3,10 +3,10 @@ import Reveal from "@/components/Reveal";
 import SvgArt from "@/components/SvgArt";
 import { FAQS } from "@/components/Faqs";
 import {
+  AboutShowcase,
   ContactBlock,
   FaqList,
   FounderBlock,
-  FunFacts,
   PageHead,
   PartnerStrip,
   ROMAN,
@@ -87,16 +87,7 @@ export default function AboutPage() {
       {/* ---------- story + funfacts ---------- */}
       <section aria-label="Our story">
         <div className="wrap">
-          <SecHead2
-            kicker="Our Story"
-            title={
-              <>
-                Small Team, <span className="it">Big-Brand</span> Standards
-              </>
-            }
-            right="ZUHAYN - Creative & IT Solutions was founded in 2020 in Dhaka, Bangladesh, with a simple idea: small and growing businesses deserve the same quality of design and marketing as the big brands, without the big-agency complexity. Today we help entrepreneurs present themselves professionally and grow online, in Bangladesh and abroad."
-          />
-          <FunFacts />
+          <AboutShowcase />
         </div>
       </section>
 

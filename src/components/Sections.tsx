@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   CLIENTS,
   INDUSTRIES,
@@ -346,3 +346,170 @@ export function PageHead({
 }
 
 export { WORK };
+
+/* ---------- glass-shape hero (reference layout) ---------- */
+export function HeroHome() {
+  const [tilt, setTilt] = useState({ x: 0, y: 0, s: 0 });
+
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() =>
+        setTilt((t) => ({ ...t, s: Math.min(window.scrollY, 900) }))
+      );
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return (
+    <div
+      className="hero2"
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        setTilt((t) => ({
+          ...t,
+          x: (e.clientX - r.left) / r.width - 0.5,
+          y: (e.clientY - r.top) / r.height - 0.5,
+        }));
+      }}
+    >
+      <div className="hero2-quote">
+        <p>
+          “ At ZUHAYN, we believe that creativity is the catalyst for growth.
+          As a full-service creative agency, we specialise in transforming bold
+          ideas into compelling realities. ”
+        </p>
+        <p>
+          Whether it&apos;s developing a brand identity, creating a
+          user-friendly website, or executing a dynamic marketing campaign, we
+          approach every project with the same dedication and enthusiasm.
+        </p>
+        <div className="hq-author">
+          <b>{SITE.founder}</b>
+          <span>Chief Executive Officer</span>
+        </div>
+      </div>
+
+      <div className="hero2-shape" aria-hidden="true">
+        <div
+          className="blob-wrap"
+          style={{
+            transform: `translate(${tilt.x * 34}px, ${tilt.y * 26 - tilt.s * 0.04}px) rotate(${tilt.x * 7 + tilt.s * 0.05}deg) scale(${1 - tilt.s * 0.00012})`,
+          }}
+        >
+          <div className="blob">
+            <div className="blob-iri" />
+            <div className="blob-rim" />
+            <div className="blob-spec" />
+            <div className="blob-tail" />
+          </div>
+        </div>
+      </div>
+
+      <div className="wrap hero2-bottom">
+        <h1 className="hero2-title">
+          <span className="l1">Digital Marketing</span>
+          <span className="l2">That Grows Brands</span>
+        </h1>
+        <Link href="/contact" className="btn btn-ghost hero2-connect">
+          Let&apos;s Connect ↗
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- about showcase: statement + staggered stat cards ---------- */
+const STATEMENT =
+  "Founded on a simple idea, ZUHAYN is a diverse team of creative and IT experts dedicated to delivering outstanding results for ambitious brands in Bangladesh and worldwide, through design and marketing that turn viewers into customers.";
+
+const FF_CARDS = [
+  { label: "Founded In Dhaka", value: "2020", suffix: "", photo: "/founder.jpg", always: true },
+  { label: "Happy Clients", value: "100", suffix: "+", photo: "/hero-bg.jpg", always: false },
+  { label: "Core Services", value: "9", suffix: "+", photo: "/founder.jpg", always: false },
+  { label: "Key Industries", value: "4", suffix: "+", photo: "/hero-bg.jpg", always: false },
+];
+
+export function AboutShowcase() {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [filled, setFilled] = useState(0);
+  const words = STATEMENT.split(" ");
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const el = ref.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const p = (vh * 0.88 - rect.top) / (rect.height + vh * 0.3);
+        setFilled(Math.max(0, Math.min(1, p)));
+      });
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const litCount = Math.round(filled * words.length);
+
+  return (
+    <div>
+      <div className="about-show">
+        <span className="about-label">
+          <span className="bars" aria-hidden="true">
+            <i /><i /><i /><i /><i />
+          </span>
+          About Us
+        </span>
+        <p className="statement" ref={ref}>
+          {words.map((w, i) => (
+            <span key={i} className={`w${i < litCount ? " on" : ""}`}>
+              {w}{" "}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      <div className="ff-cards">
+        {FF_CARDS.map((c, i) => (
+          <Reveal className={`ff-card off-${i + 1}`} key={c.label}>
+            <Image
+              src={c.photo}
+              alt=""
+              width={640}
+              height={760}
+              className={`ff-photo${c.always ? "" : " ff-hover"}`}
+            />
+            <span className="ff-label2">{c.label}</span>
+            <span className="ff-num2">
+              {c.value === "2020" ? (
+                <>2020</>
+              ) : (
+                <>
+                  <CountUp value={Number(c.value)} />
+                  <span className="suffix">{c.suffix}</span>
+                </>
+              )}
+            </span>
+            <span className="ff-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}

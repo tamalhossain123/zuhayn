@@ -4,10 +4,11 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import SvgArt from "@/components/SvgArt";
 import {
+  AboutShowcase,
   ClientTrack,
   ContactBlock,
   FounderBlock,
-  FunFacts,
+  HeroHome,
   FeatureWork,
   IndustryRows,
   PartnerStrip,
@@ -40,102 +41,12 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* ---------- Hero (reference layout) ---------- */}
-      <div className="hero-sec" id="home">
-        <div className="wrap">
-          <div className="hero-top-row">
-            <div>
-              <p className="hero-quote">
-                At ZUHAYN, we believe creativity and honest marketing grow any
-                business. As a full-service creative and IT team, we turn bold
-                ideas into brands, campaigns and websites that bring real
-                customers.
-              </p>
-              <div className="author-info">
-                <Image
-                  src="/founder.jpg"
-                  alt="Mohammad Forhad"
-                  width={108}
-                  height={108}
-                />
-                <span>
-                  <b>{SITE.founder}</b>
-                  <span>Founder &amp; Chief Executive Officer</span>
-                </span>
-              </div>
-            </div>
-            <p className="hero-top-desc">
-              Founded in 2020 in Dhaka on a simple idea: small and growing
-              businesses deserve the same quality of design and marketing as
-              the big brands, without the big-agency complexity.
-            </p>
-          </div>
-
-          <h1 className="hero-title">
-            <span className="line">
-              <span>Digital Marketing</span>
-            </span>
-            <span className="line">
-              <span>
-                That <span className="it">Grows</span> Brands
-              </span>
-            </span>
-          </h1>
-
-          <div className="hero-actions">
-            <Link href="/contact" className="btn btn-primary">
-              Let&apos;s Connect
-              <SvgArt index={0} />
-            </Link>
-            <Link href="/about" className="btn btn-ghost">
-              About Us
-            </Link>
-          </div>
-        </div>
-
-        <div className="wrap">
-          <div className="hero-media">
-            <Image
-              src="/hero-bg.jpg"
-              alt="The Zuhayn team planning a campaign in Dhaka"
-              width={1600}
-              height={900}
-              priority
-            />
-            <span className="media-badge">
-              <span className="dot" /> Digital Marketing Agency, Dhaka
-            </span>
-          </div>
-          <div className="hero-bottom">
-            <span className="hb-left">Scroll to explore ↓</span>
-            <div className="hb-right">
-              <span>
-                <b>100+</b> Happy clients
-              </span>
-              <span>
-                <b>9+</b> Services, one roof
-              </span>
-              <span>
-                <b>Since 2020</b> Dhaka, Bangladesh
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <HeroHome />
 
       {/* ---------- About + funfacts ---------- */}
       <section aria-label="About Zuhayn">
         <div className="wrap">
-          <SecHead2
-            kicker="About Us"
-            title={
-              <>
-                A Small Team With <span className="it">Big-Brand</span> Standards
-              </>
-            }
-            right="Your designs and your campaigns are planned together, so your brand looks consistent everywhere and your ads hit harder."
-          />
-          <FunFacts />
+          <AboutShowcase />
         </div>
       </section>
 
