@@ -314,7 +314,7 @@ main > section:nth-of-type(even) { background: #060606; }
 .process-box p { color: var(--muted); font-size: 16px; }
 
 /* ---------- faq ---------- */
-.faq-list { border-top: 1px solid var(--line); max-width: 920px; }
+.faq-list { border-top: 1px solid var(--line); max-width: 920px; margin-inline: auto; }
 .faq-item { border-bottom: 1px solid var(--line); }
 .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 20px; text-align: left; padding: 24px 6px; font-size: 20px; font-weight: 800; }
 .faq-q .fx { font-size: 26px; font-weight: 400; color: var(--muted); transition: transform .3s; flex: none; }
