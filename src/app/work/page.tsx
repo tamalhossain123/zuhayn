@@ -6,7 +6,7 @@ import {
   IndustryRows,
   PageHead,
   PartnerStrip,
-  SecHead2,
+  SectionIntro,
 } from "@/components/Sections";
 import { WORK } from "@/data/site";
 
@@ -46,14 +46,9 @@ export default function WorkPage() {
 
       <section aria-label="Featured projects">
         <div className="wrap">
-          <SecHead2
-            kicker="Projects"
-            title={
-              <>
-                Featured <span className="it">Projects</span>
-              </>
-            }
-            right="Every sample below was built around one goal: turning viewers into buyers, callers and customers."
+          <SectionIntro
+            label="Projects"
+            text="Every sample below was built around one goal: turning viewers into buyers, callers and customers for the business behind it."
           />
           {WORK.map((w) => (
             <FeatureWork key={w.id} work={w} />
@@ -63,13 +58,9 @@ export default function WorkPage() {
 
       <section aria-label="Industries we serve" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Industries"
-            title={
-              <>
-                Industries We <span className="it">Know</span> Well
-              </>
-            }
+          <SectionIntro
+            label="Industries"
+            text="Industries we know well, because we design and market for them every week."
           />
           <IndustryRows />
         </div>
@@ -77,13 +68,9 @@ export default function WorkPage() {
 
       <section className="track-sec" aria-label="Our clients" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Our Clients"
-            title={
-              <>
-                Brands We&apos;ve <span className="it">Worked</span> With
-              </>
-            }
+          <SectionIntro
+            label="Our Clients"
+            text="Real companies across Bangladesh and worldwide have trusted Zuhayn with their design, their campaigns and their growth."
           />
         </div>
         <ClientTrack />

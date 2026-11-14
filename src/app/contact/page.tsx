@@ -5,7 +5,7 @@ import {
   FaqList,
   PageHead,
   PartnerStrip,
-  SecHead2,
+  SectionIntro,
 } from "@/components/Sections";
 
 export const metadata: Metadata = {
@@ -50,13 +50,9 @@ export default function ContactPage() {
 
       <section aria-label="Frequently asked questions" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="FAQ"
-            title={
-              <>
-                Before You <span className="it">Ask</span>
-              </>
-            }
+          <SectionIntro
+            label="FAQ"
+            text="Everything you might want to know before starting a project with us, answered plainly and honestly."
           />
           <FaqList faqs={FAQS} />
         </div>

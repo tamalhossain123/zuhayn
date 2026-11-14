@@ -12,7 +12,7 @@ import {
   FeatureWork,
   IndustryRows,
   PartnerStrip,
-  SecHead2,
+  SectionIntro,
   ServiceList,
 } from "@/components/Sections";
 import { SITE, WORK } from "@/data/site";
@@ -53,14 +53,9 @@ export default function HomePage() {
       {/* ---------- Services ---------- */}
       <section id="services" aria-label="Our services" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="What We Do"
-            title={
-              <>
-                Services That Make Your Brand <span className="it">Impossible</span> To Ignore
-              </>
-            }
-            right="From the first logo sketch to the ad campaign that brings in customers, everything your business needs to look professional and grow online, in one place."
+          <SectionIntro
+            label="Our Service"
+            text="From the first logo sketch to the ad campaign that brings in customers, we build everything your brand needs to look professional and grow online, all under one roof."
           />
           <ServiceList />
         </div>
@@ -69,14 +64,9 @@ export default function HomePage() {
       {/* ---------- Featured work ---------- */}
       <section aria-label="Featured work" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Featured Work"
-            title={
-              <>
-                Recent Projects, <span className="it">Real</span> Businesses
-              </>
-            }
-            right="Design samples that sell, for businesses that sell products: fashion, food, construction and electronics."
+          <SectionIntro
+            label="Featured Work"
+            text="Scroll-stopping creative for real businesses: sale campaigns, offer ads and brand visuals that turn viewers into buyers, callers and customers."
           />
           {WORK.slice(0, 3).map((w) => (
             <FeatureWork key={w.id} work={w} />
@@ -93,13 +83,9 @@ export default function HomePage() {
       {/* ---------- Industries (numbered rows) ---------- */}
       <section aria-label="Industries we serve" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Industries"
-            title={
-              <>
-                Who We <span className="it">Design &amp; Market</span> For
-              </>
-            }
+          <SectionIntro
+            label="Industries"
+            text="We design and market for clothing brands, restaurants, builders and electronics businesses that sell products and want more customers."
           />
           <IndustryRows />
         </div>
@@ -108,14 +94,9 @@ export default function HomePage() {
       {/* ---------- Founder ---------- */}
       <section aria-label="Meet the founder" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="The Team"
-            title={
-              <>
-                Led By The <span className="it">Founder</span>, Personally
-              </>
-            }
-            right="No agencies-between-agencies. The person you meet is the person who leads your project."
+          <SectionIntro
+            label="The Team"
+            text="No agencies between agencies: every project at Zuhayn is led personally by the founder, from the first idea to the final delivery."
           />
           <FounderBlock />
         </div>
@@ -124,14 +105,9 @@ export default function HomePage() {
       {/* ---------- Clients track ---------- */}
       <section className="track-sec" aria-label="Our clients" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Our Clients"
-            title={
-              <>
-                Brands We&apos;ve <span className="it">Worked</span> With
-              </>
-            }
-            right="Real companies that trusted Zuhayn with their design and marketing."
+          <SectionIntro
+            label="Our Clients"
+            text="Real companies across Bangladesh and worldwide have trusted Zuhayn with their design, their campaigns and their growth."
           />
         </div>
         <ClientTrack />

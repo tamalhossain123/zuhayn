@@ -76,9 +76,9 @@ export function ServiceList() {
   return (
     <div>
       <div className="svc-head-row" aria-hidden="true">
-        <span>Service</span>
-        <span>Features</span>
-        <span />
+        <span>↓ Service</span>
+        <span>↓ Features</span>
+        <span>↓ Illustration</span>
       </div>
       <div className="svc-list">
         {SERVICES.map((s, i) => (
@@ -424,21 +424,11 @@ export function HeroHome() {
   );
 }
 
-/* ---------- about showcase: statement + staggered stat cards ---------- */
-const STATEMENT =
-  "Founded on a simple idea, ZUHAYN is a diverse team of creative and IT experts dedicated to delivering outstanding results for ambitious brands in Bangladesh and worldwide, through design and marketing that turn viewers into customers.";
-
-const FF_CARDS = [
-  { label: "Founded In Dhaka", value: "2020", suffix: "", photo: "/founder.jpg", always: true },
-  { label: "Happy Clients", value: "100", suffix: "+", photo: "/hero-bg.jpg", always: false },
-  { label: "Core Services", value: "9", suffix: "+", photo: "/founder.jpg", always: false },
-  { label: "Key Industries", value: "4", suffix: "+", photo: "/hero-bg.jpg", always: false },
-];
-
-export function AboutShowcase() {
+/* ---------- scroll-fill statement + section intro (reference pattern) ---------- */
+export function Statement({ text }: { text: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const [filled, setFilled] = useState(0);
-  const words = STATEMENT.split(" ");
+  const words = text.split(" ");
 
   useEffect(() => {
     let raf = 0;
@@ -464,7 +454,43 @@ export function AboutShowcase() {
   }, []);
 
   const litCount = Math.round(filled * words.length);
+  return (
+    <p className="statement" ref={ref}>
+      {words.map((w, i) => (
+        <span key={i} className={`w${i < litCount ? " on" : ""}`}>
+          {w}{" "}
+        </span>
+      ))}
+    </p>
+  );
+}
 
+export function SectionIntro({ label, text }: { label: string; text: string }) {
+  return (
+    <div className="about-show" style={{ marginBottom: 44 }}>
+      <span className="about-label">
+        <span className="bars" aria-hidden="true">
+          <i /><i /><i /><i /><i />
+        </span>
+        {label}
+      </span>
+      <Statement text={text} />
+    </div>
+  );
+}
+
+/* ---------- about showcase: statement + staggered stat cards ---------- */
+const STATEMENT =
+  "Founded on a simple idea, ZUHAYN is a diverse team of creative and IT experts dedicated to delivering outstanding results for ambitious brands in Bangladesh and worldwide, through design and marketing that turn viewers into customers.";
+
+const FF_CARDS = [
+  { label: "Founded In Dhaka", value: "2020", suffix: "", photo: "/founder.jpg", always: true },
+  { label: "Happy Clients", value: "100", suffix: "+", photo: "/hero-bg.jpg", always: false },
+  { label: "Core Services", value: "9", suffix: "+", photo: "/founder.jpg", always: false },
+  { label: "Key Industries", value: "4", suffix: "+", photo: "/hero-bg.jpg", always: false },
+];
+
+export function AboutShowcase() {
   return (
     <div>
       <div className="about-show">
@@ -474,13 +500,7 @@ export function AboutShowcase() {
           </span>
           About Us
         </span>
-        <p className="statement" ref={ref}>
-          {words.map((w, i) => (
-            <span key={i} className={`w${i < litCount ? " on" : ""}`}>
-              {w}{" "}
-            </span>
-          ))}
-        </p>
+        <Statement text={STATEMENT} />
       </div>
 
       <div className="ff-cards">

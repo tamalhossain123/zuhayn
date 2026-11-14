@@ -10,7 +10,7 @@ import {
   PageHead,
   PartnerStrip,
   ROMAN,
-  SecHead2,
+  SectionIntro,
 } from "@/components/Sections";
 
 export const metadata: Metadata = {
@@ -94,13 +94,9 @@ export default function AboutPage() {
       {/* ---------- why us (numbered rows) ---------- */}
       <section aria-label="Why Zuhayn" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Why Us"
-            title={
-              <>
-                Built On <span className="it">Trust</span>, Run On Results
-              </>
-            }
+          <SectionIntro
+            label="Why Us"
+            text="Your designs and your campaigns are planned together, with fast turnaround and honest reporting, so your brand stays consistent everywhere and your ads hit harder."
           />
           <div className="numrows">
             {WHY.map((w, i) => (
@@ -120,13 +116,9 @@ export default function AboutPage() {
       {/* ---------- process ---------- */}
       <section aria-label="Our process" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Our Process"
-            title={
-              <>
-                How Every Project <span className="it">Moves</span>
-              </>
-            }
+          <SectionIntro
+            label="Our Process"
+            text="Every project moves the same way: we discover first, create with one clear goal, then launch, measure honestly and keep improving what works."
           />
           <div className="process-grid">
             {PROCESS.map((p, i) => (
@@ -146,13 +138,9 @@ export default function AboutPage() {
       {/* ---------- faq ---------- */}
       <section aria-label="Frequently asked questions" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="FAQ"
-            title={
-              <>
-                Questions, <span className="it">Answered</span>
-              </>
-            }
+          <SectionIntro
+            label="FAQ"
+            text="Everything you might want to know before starting a project with us, answered plainly and honestly."
           />
           <FaqList faqs={FAQS} />
         </div>
@@ -161,13 +149,9 @@ export default function AboutPage() {
       {/* ---------- founder ---------- */}
       <section aria-label="Meet the founder" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="The Team"
-            title={
-              <>
-                Meet The <span className="it">Founder</span>
-              </>
-            }
+          <SectionIntro
+            label="The Team"
+            text="Meet the founder who leads every project personally, from the first brief to the final delivery."
           />
           <FounderBlock />
         </div>

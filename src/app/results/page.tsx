@@ -6,7 +6,7 @@ import {
   ContactBlock,
   PageHead,
   PartnerStrip,
-  SecHead2,
+  SectionIntro,
 } from "@/components/Sections";
 
 export const metadata: Metadata = {
@@ -59,14 +59,9 @@ export default function ResultsPage() {
 
       <section aria-label="Marketing results">
         <div className="wrap">
-          <SecHead2
-            kicker="Marketing Results"
-            title={
-              <>
-                Sample Campaign <span className="it">Performance</span>
-              </>
-            }
-            right="The charts below show a sample campaign performance, the pattern we build toward with consistent creative, testing and weekly optimisation."
+          <SectionIntro
+            label="Marketing Results"
+            text="Good marketing is measurable: consistent creative, testing and weekly optimisation, reported in real numbers you can check yourself."
           />
 
           <Reveal className="funfacts" >
@@ -154,14 +149,9 @@ export default function ResultsPage() {
 
       <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SecHead2
-            kicker="Your Turn"
-            title={
-              <>
-                Want Numbers Like These, <span className="it">Reported Honestly?</span>
-              </>
-            }
-            right="Start a campaign with Zuhayn and get clear weekly reporting: what ran, what it reached, and what it brought in."
+          <SectionIntro
+            label="Your Turn"
+            text="Start a campaign with Zuhayn and get clear weekly reporting on what ran, what it reached and what it brought in."
           />
           <ContactBlock />
         </div>
