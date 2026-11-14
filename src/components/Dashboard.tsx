@@ -2,12 +2,12 @@ import CountUp from "./CountUp";
 import SvgArt from "./SvgArt";
 
 const CHIPS = [
-  { cls: "pchip-1", color: "#1877F2", label: "Facebook Ads" },
-  { cls: "pchip-2", color: "#E1306C", label: "Instagram" },
-  { cls: "pchip-3", color: "#FF0000", label: "YouTube" },
-  { cls: "pchip-4", color: "#34A853", label: "Google Ads" },
-  { cls: "pchip-5", color: "#0A66C2", label: "LinkedIn" },
-  { cls: "pchip-6", color: "#25F4EE", label: "TikTok" },
+  { cls: "pchip-1", color: "#FFFFFF", label: "Facebook Ads" },
+  { cls: "pchip-2", color: "#D8D8D8", label: "Instagram" },
+  { cls: "pchip-3", color: "#B5B5B5", label: "YouTube" },
+  { cls: "pchip-4", color: "#929292", label: "Google Ads" },
+  { cls: "pchip-5", color: "#6E6E6E", label: "LinkedIn" },
+  { cls: "pchip-6", color: "#4A4A4A", label: "TikTok" },
 ];
 
 const KPIS = [

@@ -35,10 +35,10 @@ const KPI_STATS = [
 ];
 
 const DONUT_LEGEND = [
-  { color: "#2FB9EC", label: "Facebook", pct: "46%" },
-  { color: "#1BB5A6", label: "Instagram", pct: "24%" },
-  { color: "#1273B8", label: "Google", pct: "18%" },
-  { color: "#8AD8F8", label: "YouTube", pct: "12%" },
+  { color: "#FFFFFF", label: "Facebook", pct: "46%" },
+  { color: "#C9C9C9", label: "Instagram", pct: "24%" },
+  { color: "#939393", label: "Google", pct: "18%" },
+  { color: "#5C5C5C", label: "YouTube", pct: "12%" },
 ];
 
 export default function ResultsPage() {
@@ -130,11 +130,11 @@ export default function ResultsPage() {
                   </p>
                   <ul className="legend">
                     <li>
-                      <span className="sw" style={{ background: "#5F82A0" }} />
+                      <span className="sw" style={{ background: "#8A8A8A" }} />
                       Before ads
                     </li>
                     <li>
-                      <span className="sw" style={{ background: "#2FB9EC" }} />
+                      <span className="sw" style={{ background: "#FFFFFF" }} />
                       With Zuhayn ads
                     </li>
                   </ul>
