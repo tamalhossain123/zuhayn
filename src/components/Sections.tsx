@@ -100,8 +100,12 @@ export function ServiceList() {
             </Link>
             <p className="svc-desc">{s.description}</p>
             <span className="svc-img" aria-hidden="true">
-              <SvgArt index={s.icon} />
-              <span className="big-z">Z</span>
+              <Image
+                src={`/services/svc-${i + 1}.jpg`}
+                alt=""
+                width={420}
+                height={264}
+              />
             </span>
           </Reveal>
         ))}
