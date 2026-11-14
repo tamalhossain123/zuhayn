@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import SectionHead from "@/components/SectionHead";
-import Reveal from "@/components/Reveal";
-import AdCard from "@/components/AdCard";
-import SvgArt from "@/components/SvgArt";
-import CtaBand from "@/components/CtaBand";
-import { INDUSTRIES, WORK } from "@/data/site";
+import {
+  ClientTrack,
+  ContactBlock,
+  FeatureWork,
+  IndustryRows,
+  PageHead,
+  PartnerStrip,
+  SecHead2,
+} from "@/components/Sections";
+import { WORK } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Our Work & Industries - ZUHAYN, Dhaka",
@@ -31,94 +34,68 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <>
-      {/* ---------- Page hero ---------- */}
-      <div className="hero page-hero">
-        <span className="hero-glow glow-1" aria-hidden="true" />
-        <span className="hero-glow glow-2" aria-hidden="true" />
-        <div className="wrap hero-in">
-          <div className="hero-copy">
-            <span className="hero-badge">
-              <span className="dot" /> Our Work
-            </span>
-            <h1 className="display">
-              Design Samples That{" "}
-              <span className="grad-text accent-italic">Sell</span>
-            </h1>
-            <p className="lede">
-              Fresh ad creatives from our studio, designed for the industries
-              we serve. Bold headline, clear offer, one tap to buy. This is
-              the standard your brand gets too.
-            </p>
-            <div className="hero-ctas">
-              <Link href="/contact" className="btn btn-primary">
-                Get a Free Quote
-                <SvgArt index={0} />
-              </Link>
-              <Link href="/results" className="btn btn-ghost">
-                See The Results
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section className="work" id="work" aria-label="Recent work">
-        <div className="wrap">
-          <SectionHead
-            kicker="Recent Work"
-            title={
-              <>
-                Fresh Creatives From <span className="accent">Our Studio</span>
-              </>
-            }
-          />
-          <div className="ad-grid">
-            {WORK.map((w) => (
-              <AdCard key={w.id} work={w} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="industries" id="industries" aria-label="Industries we serve">
-        <div className="wrap">
-          <SectionHead
-            kicker="Industries We Serve"
-            title={
-              <>
-                Built For Businesses That <span className="accent">Sell Products</span>
-              </>
-            }
-            intro="We specialise in marketing and design for product-based businesses. If you sell clothing, food, buildings or gadgets, we know how to make your products look irresistible and turn viewers into buyers."
-          />
-          <div className="ind-grid">
-            {INDUSTRIES.map((ind, i) => (
-              <Reveal key={ind.title} as="article" className={`ind ind-${i + 1}`}>
-                <div className="ind-top">
-                  <span className="ic">
-                    <SvgArt index={ind.icon} />
-                  </span>
-                  <span className="ind-num">{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <div className="ind-body">
-                  <h3>{ind.title}</h3>
-                  <p>{ind.description}</p>
-                  <ul className="ind-tags">
-                    {ind.tags.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CtaBand
-        title="Want Creatives Like These For Your Products?"
-        text="Send us your product or offer, we will design the campaign creative and run it where your customers are."
+      <PageHead
+        crumb="Our Work"
+        title={
+          <>
+            Work That <span className="it">Sells</span>
+          </>
+        }
+        lede="Design samples that sell, for businesses that sell products: fashion, food, construction and electronics."
       />
+
+      <section aria-label="Featured projects">
+        <div className="wrap">
+          <SecHead2
+            kicker="Projects"
+            title={
+              <>
+                Featured <span className="it">Projects</span>
+              </>
+            }
+            right="Every sample below was built around one goal: turning viewers into buyers, callers and customers."
+          />
+          {WORK.map((w) => (
+            <FeatureWork key={w.id} work={w} />
+          ))}
+        </div>
+      </section>
+
+      <section aria-label="Industries we serve" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="Industries"
+            title={
+              <>
+                Industries We <span className="it">Know</span> Well
+              </>
+            }
+          />
+          <IndustryRows />
+        </div>
+      </section>
+
+      <section className="track-sec" aria-label="Our clients" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="Our Clients"
+            title={
+              <>
+                Brands We&apos;ve <span className="it">Worked</span> With
+              </>
+            }
+          />
+        </div>
+        <ClientTrack />
+      </section>
+
+      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <ContactBlock />
+        </div>
+      </section>
+
+      <PartnerStrip />
     </>
   );
 }

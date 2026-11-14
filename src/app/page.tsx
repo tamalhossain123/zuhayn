@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import SectionHead from "@/components/SectionHead";
-import Dashboard from "@/components/Dashboard";
-import CountUp from "@/components/CountUp";
 import SvgArt from "@/components/SvgArt";
-import CtaBand from "@/components/CtaBand";
-import { CLIENTS, SERVICES, SITE } from "@/data/site";
+import {
+  ClientTrack,
+  ContactBlock,
+  FounderBlock,
+  FunFacts,
+  FeatureWork,
+  IndustryRows,
+  PartnerStrip,
+  SecHead2,
+  ServiceList,
+} from "@/components/Sections";
+import { SITE, WORK } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "ZUHAYN - Creative & IT Solutions | Digital Marketing & Design Agency, Dhaka",
@@ -29,169 +37,203 @@ export const metadata: Metadata = {
   },
 };
 
-const STRIP_TEXT =
-  "Digital Marketing ✦ Creative Design ✦ Video Editing ✦ Branding ✦ AI Automation ✦ Web Design ✦ ";
-
-const HOME_STATS = [
-  { value: 2020, suffix: "", label: "Founded in Dhaka, Bangladesh", count: false },
-  { value: 100, suffix: "+", label: "Happy clients served", count: true },
-  { value: 9, suffix: "+", label: "Core services under one roof", count: true },
-  { value: 4, suffix: "+", label: "Key industries we design & market for", count: true },
-];
-
 export default function HomePage() {
   return (
     <>
-      {/* ---------- Hero (original design) ---------- */}
-      <div className="hero" id="home">
-        <span className="hero-glow glow-1" aria-hidden="true" />
-        <span className="hero-glow glow-2" aria-hidden="true" />
-        <div className="wrap hero-in">
-          <div className="hero-copy">
-            <span className="hero-badge">
+      {/* ---------- Hero (reference layout) ---------- */}
+      <div className="hero-sec" id="home">
+        <div className="wrap">
+          <div className="hero-top-row">
+            <div>
+              <p className="hero-quote">
+                At ZUHAYN, we believe creativity and honest marketing grow any
+                business. As a full-service creative and IT team, we turn bold
+                ideas into brands, campaigns and websites that bring real
+                customers.
+              </p>
+              <div className="author-info">
+                <Image
+                  src="/founder.jpg"
+                  alt="Mohammad Forhad"
+                  width={108}
+                  height={108}
+                />
+                <span>
+                  <b>{SITE.founder}</b>
+                  <span>Founder &amp; Chief Executive Officer</span>
+                </span>
+              </div>
+            </div>
+            <p className="hero-top-desc">
+              Founded in 2020 in Dhaka on a simple idea: small and growing
+              businesses deserve the same quality of design and marketing as
+              the big brands, without the big-agency complexity.
+            </p>
+          </div>
+
+          <h1 className="hero-title">
+            <span className="line">
+              <span>Digital Marketing</span>
+            </span>
+            <span className="line">
+              <span>
+                That <span className="it">Grows</span> Brands
+              </span>
+            </span>
+          </h1>
+
+          <div className="hero-actions">
+            <Link href="/contact" className="btn btn-primary">
+              Let&apos;s Connect
+              <SvgArt index={0} />
+            </Link>
+            <Link href="/about" className="btn btn-ghost">
+              About Us
+            </Link>
+          </div>
+        </div>
+
+        <div className="wrap">
+          <div className="hero-media">
+            <Image
+              src="/hero-bg.jpg"
+              alt="The Zuhayn team planning a campaign in Dhaka"
+              width={1600}
+              height={900}
+              priority
+            />
+            <span className="media-badge">
               <span className="dot" /> Digital Marketing Agency, Dhaka
             </span>
-            <h1 className="display">
-              <span className="hline">
-                <span className="w grad-text">Digital</span>
+          </div>
+          <div className="hero-bottom">
+            <span className="hb-left">Scroll to explore ↓</span>
+            <div className="hb-right">
+              <span>
+                <b>100+</b> Happy clients
               </span>
-              <span className="hline">
-                <span className="w grad-text">Marketing</span>
+              <span>
+                <b>9+</b> Services, one roof
               </span>
-              <span className="hline">
-                <span className="w">That</span>{" "}
-                <span className="w grad-text accent-italic">Grows</span>
+              <span>
+                <b>Since 2020</b> Dhaka, Bangladesh
               </span>
-              <span className="hline">
-                <span className="w">Your</span> <span className="w">Brand</span>
-              </span>
-            </h1>
-            <p className="lede">
-              Ads, design &amp; content that turn scrollers into customers.
-            </p>
-            <div className="hero-ctas">
-              <Link href="/contact" className="btn btn-primary hero-pulse">
-                Get a Free Quote
-                <SvgArt index={0} />
-              </Link>
-              <a href={SITE.phoneHref} className="btn btn-ghost">
-                <SvgArt index={3} />
-                {SITE.phoneDisplay}
-              </a>
             </div>
           </div>
-          <div className="hero-visual">
-            <Dashboard />
-          </div>
         </div>
       </div>
 
-      {/* ---------- Marquee strip ---------- */}
-      <div className="strip" aria-hidden="true">
-        <div className="strip-track">
-          <span>{STRIP_TEXT}</span>
-          <span>{STRIP_TEXT}</span>
-        </div>
-      </div>
-
-      {/* ---------- Services ---------- */}
-      <section className="services" id="services" aria-label="Our services">
+      {/* ---------- About + funfacts ---------- */}
+      <section aria-label="About Zuhayn">
         <div className="wrap">
-          <SectionHead
-            kicker="What We Do"
+          <SecHead2
+            kicker="About Us"
             title={
               <>
-                Services That Make Your Brand{" "}
-                <span className="accent">Impossible To Ignore</span>
+                A Small Team With <span className="it">Big-Brand</span> Standards
               </>
             }
-            intro="From the first logo sketch to the ad campaign that brings in customers, everything your business needs to look professional and grow online, in one place."
+            right="Your designs and your campaigns are planned together, so your brand looks consistent everywhere and your ads hit harder."
           />
-          <div className="svc-grid">
-            {SERVICES.map((s, i) => (
-              <Reveal
-                key={s.title}
-                as="article"
-                className={`svc${s.title === "AI Automation" ? " svc-new" : ""}`}
-              >
-                <span className="num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="ic">
-                  <SvgArt index={s.icon} />
-                </span>
-                <h3>{s.title}</h3>
-                <p>{s.description}</p>
-                {s.tags.length ? (
-                  <ul>
-                    {s.tags.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </Reveal>
-            ))}
-          </div>
+          <FunFacts />
         </div>
       </section>
 
-      {/* ---------- Clients ---------- */}
-      <section className="clients" id="clients" aria-label="Our clients">
+      {/* ---------- Services ---------- */}
+      <section id="services" aria-label="Our services" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <SectionHead
-            kicker="Our Clients"
+          <SecHead2
+            kicker="What We Do"
             title={
               <>
-                Brands We&apos;ve <span className="accent">Worked With</span>
+                Services That Make Your Brand <span className="it">Impossible</span> To Ignore
               </>
             }
-            intro="Real companies that trusted Zuhayn with their design and marketing, from construction and apparel to food, education and more."
+            right="From the first logo sketch to the ad campaign that brings in customers, everything your business needs to look professional and grow online, in one place."
           />
-          <div className="client-grid">
-            {CLIENTS.map((c) => (
-              <Reveal key={c.name} as="article" className="client-tile">
-                <span className="client-mark">
-                  <span className="ic">
-                    <SvgArt index={c.icon} />
-                  </span>
-                  {c.name}
-                </span>
-                <span className="client-type">{c.sector}</span>
-                <p>{c.note}</p>
-              </Reveal>
-            ))}
-            <Link href="/contact" className="client-cta">
-              <b>Your Brand Could Be Next</b>
-              <span>
-                Join the businesses growing with Zuhayn&apos;s design &amp;
-                marketing.
-              </span>
-              <span className="go">Start a project →</span>
+          <ServiceList />
+        </div>
+      </section>
+
+      {/* ---------- Featured work ---------- */}
+      <section aria-label="Featured work" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="Featured Work"
+            title={
+              <>
+                Recent Projects, <span className="it">Real</span> Businesses
+              </>
+            }
+            right="Design samples that sell, for businesses that sell products: fashion, food, construction and electronics."
+          />
+          {WORK.slice(0, 3).map((w) => (
+            <FeatureWork key={w.id} work={w} />
+          ))}
+          <div className="more-wrap">
+            <Link href="/work" className="btn btn-ghost">
+              See All Work
+              <SvgArt index={0} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ---------- Stats ---------- */}
-      <div className="stats" role="region" aria-label="Zuhayn in numbers">
-        <div className="wrap stats-grid">
-          {HOME_STATS.map((s) => (
-            <div className="stat" key={s.label}>
-              <b>
-                {s.count ? (
-                  <CountUp value={s.value} suffix={s.suffix} />
-                ) : (
-                  <>
-                    {s.value}
-                    {s.suffix}
-                  </>
-                )}
-              </b>
-              <span>{s.label}</span>
-            </div>
-          ))}
+      {/* ---------- Industries (numbered rows) ---------- */}
+      <section aria-label="Industries we serve" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="Industries"
+            title={
+              <>
+                Who We <span className="it">Design &amp; Market</span> For
+              </>
+            }
+          />
+          <IndustryRows />
         </div>
-      </div>
+      </section>
 
-      <CtaBand />
+      {/* ---------- Founder ---------- */}
+      <section aria-label="Meet the founder" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="The Team"
+            title={
+              <>
+                Led By The <span className="it">Founder</span>, Personally
+              </>
+            }
+            right="No agencies-between-agencies. The person you meet is the person who leads your project."
+          />
+          <FounderBlock />
+        </div>
+      </section>
+
+      {/* ---------- Clients track ---------- */}
+      <section className="track-sec" aria-label="Our clients" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="Our Clients"
+            title={
+              <>
+                Brands We&apos;ve <span className="it">Worked</span> With
+              </>
+            }
+            right="Real companies that trusted Zuhayn with their design and marketing."
+          />
+        </div>
+        <ClientTrack />
+      </section>
+
+      {/* ---------- Contact ---------- */}
+      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <ContactBlock />
+        </div>
+      </section>
+
+      <PartnerStrip />
     </>
   );
 }

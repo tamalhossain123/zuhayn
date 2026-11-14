@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import SectionHead from "@/components/SectionHead";
+import ChartAnimator from "@/components/ChartAnimator";
 import Reveal from "@/components/Reveal";
 import SvgArt from "@/components/SvgArt";
-import ChartAnimator from "@/components/ChartAnimator";
-import CtaBand from "@/components/CtaBand";
+import {
+  ContactBlock,
+  PageHead,
+  PartnerStrip,
+  SecHead2,
+} from "@/components/Sections";
 
 export const metadata: Metadata = {
   title: "Results That Speak - ZUHAYN Campaign Performance",
@@ -28,10 +31,10 @@ export const metadata: Metadata = {
 };
 
 const KPI_STATS = [
-  { b: "3M+", s: "Impressions across campaigns" },
-  { b: "1M+", s: "Reach - crossed one million" },
-  { b: "100K+", s: "Leads generated for clients" },
-  { b: "0.06", s: "Monthly CTR" },
+  { b: "3M+", s: "Impressions across campaigns", d: "Total ad views across sample campaigns." },
+  { b: "1M+", s: "Reach, crossed one million", d: "People reached by consistent creative." },
+  { b: "100K+", s: "Leads generated for clients", d: "Qualified leads, tracked per channel." },
+  { b: "0.06", s: "Monthly CTR", d: "Click-through rate on the sample campaign." },
 ];
 
 const DONUT_LEGEND = [
@@ -44,51 +47,43 @@ const DONUT_LEGEND = [
 export default function ResultsPage() {
   return (
     <>
-      {/* ---------- Page hero ---------- */}
-      <div className="hero page-hero">
-        <span className="hero-glow glow-1" aria-hidden="true" />
-        <span className="hero-glow glow-2" aria-hidden="true" />
-        <div className="wrap hero-in">
-          <div className="hero-copy">
-            <span className="hero-badge">
-              <span className="dot" /> Marketing Results
-            </span>
-            <h1 className="display">
-              Results That{" "}
-              <span className="grad-text accent-italic">Speak</span>
-            </h1>
-            <p className="lede">
-              Good marketing is measurable. Run a campaign with us, and we
-              report your real numbers in exactly the format you see below.
-            </p>
-            <div className="hero-ctas">
-              <Link href="/contact" className="btn btn-primary">
-                Get a Free Quote
-                <SvgArt index={0} />
-              </Link>
-              <Link href="/work" className="btn btn-ghost">
-                See Our Work
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PageHead
+        crumb="Results"
+        title={
+          <>
+            Results That <span className="it">Speak</span>
+          </>
+        }
+        lede="Good marketing is measurable. Run a campaign with us, and we report your real numbers in exactly the format you see below."
+      />
 
-      <section className="results" id="results" aria-label="Marketing results">
+      <section aria-label="Marketing results">
         <div className="wrap">
-          <SectionHead
+          <SecHead2
             kicker="Marketing Results"
             title={
               <>
-                Sample Campaign <span className="accent">Performance</span>
+                Sample Campaign <span className="it">Performance</span>
               </>
             }
-            intro="The charts below show a sample campaign performance, the pattern we build toward with consistent creative, testing and weekly optimisation."
+            right="The charts below show a sample campaign performance, the pattern we build toward with consistent creative, testing and weekly optimisation."
           />
+
+          <Reveal className="funfacts" >
+            {KPI_STATS.map((k) => (
+              <div className="funfact" key={k.s}>
+                <span className="ff-label">{k.s}</span>
+                <span className="ff-num">{k.b}</span>
+                <span className="ff-desc">{k.d}</span>
+              </div>
+            ))}
+          </Reveal>
+
+          <div style={{ height: 26 }} />
 
           <ChartAnimator>
             <div className="results-grid">
-              <Reveal as="article" className="chart-card" >
+              <Reveal as="article" className="chart-card">
                 <div data-chart>
                   <h3>Reach Growth - 6-Month Campaign</h3>
                   <p className="c-sub">People reached per month (sample campaign)</p>
@@ -108,7 +103,7 @@ export default function ResultsPage() {
                     <SvgArt index={37} />
                     <ul className="donut-legend">
                       {DONUT_LEGEND.map((d) => (
-                        <li key={d.label}>
+                        <li className="legend" key={d.label}>
                           <span className="sw" style={{ background: d.color }} />
                           {d.label} <span>· {d.pct}</span>
                         </li>
@@ -122,18 +117,18 @@ export default function ResultsPage() {
                 </div>
               </Reveal>
 
-              <Reveal as="article" className="chart-card wide">
+              <Reveal as="article" className="chart-card">
                 <div data-chart>
                   <h3>Leads: Before Ads vs With Zuhayn</h3>
                   <p className="c-sub">
                     Qualified leads per month - first 3 months of a sample campaign
                   </p>
-                  <ul className="legend">
-                    <li>
+                  <ul className="donut-legend" style={{ margin: "12px 0" }}>
+                    <li className="legend">
                       <span className="sw" style={{ background: "#8A8A8A" }} />
                       Before ads
                     </li>
-                    <li>
+                    <li className="legend">
                       <span className="sw" style={{ background: "#FFFFFF" }} />
                       With Zuhayn ads
                     </li>
@@ -149,21 +144,7 @@ export default function ResultsPage() {
             </div>
           </ChartAnimator>
 
-          <div
-            className="stats stats-in-card"
-            role="region"
-            aria-label="Campaign performance in numbers"
-          >
-            <div className="stats-grid">
-              {KPI_STATS.map((k) => (
-                <div className="stat" key={k.s}>
-                  <b>{k.b}</b>
-                  <span>{k.s}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <p className="results-note">
+          <p className="results-note" style={{ marginTop: 22 }}>
             Sample campaign figures, shown to illustrate how campaign
             performance is reported. Your campaign report will carry your own
             real numbers.
@@ -171,10 +152,22 @@ export default function ResultsPage() {
         </div>
       </section>
 
-      <CtaBand
-        title="Want Numbers Like These, Reported Honestly?"
-        text="Start a campaign with Zuhayn and get clear weekly reporting, what ran, what it reached, and what it brought in."
-      />
+      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead2
+            kicker="Your Turn"
+            title={
+              <>
+                Want Numbers Like These, <span className="it">Reported Honestly?</span>
+              </>
+            }
+            right="Start a campaign with Zuhayn and get clear weekly reporting: what ran, what it reached, and what it brought in."
+          />
+          <ContactBlock />
+        </div>
+      </section>
+
+      <PartnerStrip />
     </>
   );
 }
