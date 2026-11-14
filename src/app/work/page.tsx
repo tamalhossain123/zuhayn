@@ -56,7 +56,7 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <section aria-label="Industries we serve" style={{ paddingTop: 0 }}>
+      <section aria-label="Industries we serve">
         <div className="wrap">
           <SectionIntro
             label="Industries"
@@ -66,7 +66,7 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <section className="track-sec" aria-label="Our clients" style={{ paddingTop: 0 }}>
+      <section className="track-sec" aria-label="Our clients">
         <div className="wrap">
           <SectionIntro
             label="Our Clients"
@@ -76,7 +76,7 @@ export default function WorkPage() {
         <ClientTrack />
       </section>
 
-      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+      <section aria-label="Contact Zuhayn">
         <div className="wrap">
           <ContactBlock />
         </div>

@@ -147,7 +147,7 @@ export default function ResultsPage() {
         </div>
       </section>
 
-      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+      <section aria-label="Contact Zuhayn">
         <div className="wrap">
           <SectionIntro
             label="Your Turn"

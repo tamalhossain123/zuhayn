@@ -92,7 +92,7 @@ export default function AboutPage() {
       </section>
 
       {/* ---------- why us (numbered rows) ---------- */}
-      <section aria-label="Why Zuhayn" style={{ paddingTop: 0 }}>
+      <section aria-label="Why Zuhayn">
         <div className="wrap">
           <SectionIntro
             label="Why Us"
@@ -114,7 +114,7 @@ export default function AboutPage() {
       </section>
 
       {/* ---------- process ---------- */}
-      <section aria-label="Our process" style={{ paddingTop: 0 }}>
+      <section aria-label="Our process">
         <div className="wrap">
           <SectionIntro
             label="Our Process"
@@ -136,7 +136,7 @@ export default function AboutPage() {
       </section>
 
       {/* ---------- faq ---------- */}
-      <section aria-label="Frequently asked questions" style={{ paddingTop: 0 }}>
+      <section aria-label="Frequently asked questions">
         <div className="wrap">
           <SectionIntro
             label="FAQ"
@@ -147,7 +147,7 @@ export default function AboutPage() {
       </section>
 
       {/* ---------- founder ---------- */}
-      <section aria-label="Meet the founder" style={{ paddingTop: 0 }}>
+      <section aria-label="Meet the founder">
         <div className="wrap">
           <SectionIntro
             label="The Team"
@@ -158,7 +158,7 @@ export default function AboutPage() {
       </section>
 
       {/* ---------- contact ---------- */}
-      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+      <section aria-label="Contact Zuhayn">
         <div className="wrap">
           <ContactBlock />
         </div>

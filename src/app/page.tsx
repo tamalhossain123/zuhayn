@@ -51,7 +51,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Services ---------- */}
-      <section id="services" aria-label="Our services" style={{ paddingTop: 0 }}>
+      <section id="services" aria-label="Our services">
         <div className="wrap">
           <SectionIntro
             label="Our Service"
@@ -62,7 +62,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Featured work ---------- */}
-      <section aria-label="Featured work" style={{ paddingTop: 0 }}>
+      <section aria-label="Featured work">
         <div className="wrap">
           <SectionIntro
             label="Featured Work"
@@ -81,7 +81,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Industries (numbered rows) ---------- */}
-      <section aria-label="Industries we serve" style={{ paddingTop: 0 }}>
+      <section aria-label="Industries we serve">
         <div className="wrap">
           <SectionIntro
             label="Industries"
@@ -92,7 +92,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Founder ---------- */}
-      <section aria-label="Meet the founder" style={{ paddingTop: 0 }}>
+      <section aria-label="Meet the founder">
         <div className="wrap">
           <SectionIntro
             label="The Team"
@@ -103,7 +103,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Clients track ---------- */}
-      <section className="track-sec" aria-label="Our clients" style={{ paddingTop: 0 }}>
+      <section className="track-sec" aria-label="Our clients">
         <div className="wrap">
           <SectionIntro
             label="Our Clients"
@@ -114,7 +114,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Contact ---------- */}
-      <section aria-label="Contact Zuhayn" style={{ paddingTop: 0 }}>
+      <section aria-label="Contact Zuhayn">
         <div className="wrap">
           <ContactBlock />
         </div>

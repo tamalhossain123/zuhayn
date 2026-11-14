@@ -48,7 +48,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section aria-label="Frequently asked questions" style={{ paddingTop: 0 }}>
+      <section aria-label="Frequently asked questions">
         <div className="wrap">
           <SectionIntro
             label="FAQ"

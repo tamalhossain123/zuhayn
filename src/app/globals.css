@@ -177,7 +177,7 @@ header.site {
 main { counter-reset: secnum; }
 section { padding: var(--section-y) 0; border-top: 1px solid #232323; counter-increment: secnum; position: relative; }
 main > section:nth-of-type(even) { background: #060606; }
-.hero-sec + section, .page-hero + section { border-top: 0; }
+.hero-sec + section, .page-hero + section, .hero2 + section { border-top: 0; }
 .sec-head2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: end; margin-bottom: 54px; padding-bottom: 30px; border-bottom: 1px solid var(--line); }
 .sec-head2 .kicker, .sec-head .kicker {
   border: 1px solid #383838; background: #0c0c0c; border-radius: 999px; padding: 8px 16px 8px 12px;
