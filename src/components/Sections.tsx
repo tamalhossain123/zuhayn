@@ -260,7 +260,13 @@ export function PartnerStrip() {
 }
 
 /* ---------- contact split section ---------- */
-export function ContactBlock({ withInfo = false }: { withInfo?: boolean }) {
+export function ContactBlock({
+  withInfo = false,
+  ctaOnly = false,
+}: {
+  withInfo?: boolean;
+  ctaOnly?: boolean;
+}) {
   return (
     <div className="contact-grid2">
       <Reveal className="contact-left">
@@ -268,10 +274,11 @@ export function ContactBlock({ withInfo = false }: { withInfo?: boolean }) {
           Let&apos;s <span className="it">Connect</span>
         </h2>
         <p className="sub">
-          Whether you have a question, or want to discuss a potential project,
-          our team at Zuhayn is here to help. Please fill out the form below.
+          {ctaOnly
+            ? "Whether you have a question, or want to discuss a potential project, our team at Zuhayn is here to help. Reach us directly, or send a quote request and we will reply with next steps and a clear price."
+            : "Whether you have a question, or want to discuss a potential project, our team at Zuhayn is here to help. Please fill out the form below."}
         </p>
-        {withInfo ? (
+        {withInfo || ctaOnly ? (
           <div className="info-rows">
             <div className="info-row">
               <span className="il">Phone</span>
@@ -287,7 +294,19 @@ export function ContactBlock({ withInfo = false }: { withInfo?: boolean }) {
             </div>
           </div>
         ) : null}
-        <QuoteForm />
+        {ctaOnly ? (
+          <div className="cta-actions">
+            <Link href="/contact" className="btn btn-primary">
+              Request A Free Quote
+              <SvgArt index={0} />
+            </Link>
+            <a href={SITE.phoneHref} className="btn btn-ghost">
+              Call {SITE.phoneDisplay}
+            </a>
+          </div>
+        ) : (
+          <QuoteForm />
+        )}
       </Reveal>
       <Reveal className="contact-img">
         <Image

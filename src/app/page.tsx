@@ -116,7 +116,7 @@ export default function HomePage() {
       {/* ---------- Contact ---------- */}
       <section aria-label="Contact Zuhayn">
         <div className="wrap">
-          <ContactBlock />
+          <ContactBlock ctaOnly />
         </div>
       </section>
 

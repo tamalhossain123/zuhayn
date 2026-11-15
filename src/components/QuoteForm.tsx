@@ -49,7 +49,7 @@ export default function QuoteForm() {
   return (
     <form className="quote" onSubmit={onSubmit} noValidate>
       <h3>Request A Free Quote</h3>
-      <p>
+      <p className="q-intro">
         Fill this in and we&apos;ll reply with next steps and a clear price for
         your project. Fields marked <span style={{ color: "var(--sky)" }}>*</span>{" "}
         are required.
