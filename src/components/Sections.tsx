@@ -14,7 +14,8 @@ import {
 } from "@/data/site";
 import CountUp from "./CountUp";
 import QuoteForm from "./QuoteForm";
-import ParticleRing from "./ParticleRing";
+import dynamic from "next/dynamic";
+const ParticleRing = dynamic(() => import("./ParticleRing"), { ssr: false });
 import Reveal from "./Reveal";
 import SvgArt from "./SvgArt";
 
