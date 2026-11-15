@@ -95,7 +95,7 @@ export default function ParticleRing() {
 
       const cx = w / 2;
       const cy = h / 2;
-      const R = Math.min(w * 0.46, h * 0.54);
+      const R = Math.min(w * 0.48, h * 0.58);
       const tiltX = TILT + mouse.y * 0.1;
       const drift = mouse.x * 0.12;
       const cosT = Math.cos(tiltX);

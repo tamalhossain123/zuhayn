@@ -373,35 +373,8 @@ export { WORK };
 
 /* ---------- glass-shape hero (reference layout) ---------- */
 export function HeroHome() {
-  const [tilt, setTilt] = useState({ x: 0, y: 0, s: 0 });
-
-  useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() =>
-        setTilt((t) => ({ ...t, s: Math.min(window.scrollY, 900) }))
-      );
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <div
-      className="hero2"
-      onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        setTilt((t) => ({
-          ...t,
-          x: (e.clientX - r.left) / r.width - 0.5,
-          y: (e.clientY - r.top) / r.height - 0.5,
-        }));
-      }}
-    >
+    <div className="hero2">
       <div className="hero2-quote">
         <p>
           “ At ZUHAYN, we believe that creativity is the catalyst for growth.
@@ -421,19 +394,6 @@ export function HeroHome() {
 
       <div className="hero2-shape" aria-hidden="true">
         <ParticleRing />
-        <div
-          className="blob-wrap"
-          style={{
-            transform: `translate(${tilt.x * 34}px, ${tilt.y * 26 - tilt.s * 0.04}px) rotate(${tilt.x * 7 + tilt.s * 0.05}deg) scale(${1 - tilt.s * 0.00012})`,
-          }}
-        >
-          <div className="blob">
-            <div className="blob-iri" />
-            <div className="blob-rim" />
-            <div className="blob-spec" />
-            <div className="blob-tail" />
-          </div>
-        </div>
       </div>
 
       <div className="wrap hero2-bottom">
