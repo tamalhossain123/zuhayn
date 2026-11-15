@@ -470,7 +470,7 @@ const STATEMENT =
   "Founded on a simple idea, ZUHAYN is a diverse team of creative and IT experts dedicated to delivering outstanding results for ambitious brands in Bangladesh and worldwide, through design and marketing that turn viewers into customers.";
 
 const FF_CARDS = [
-  { label: "Founded In Dhaka", value: "2020", suffix: "", photo: "/founder.jpg", always: true },
+  { label: "Founded In Dhaka", value: "2020", suffix: "", photo: "/about/stat-1.jpg", always: true },
   { label: "Happy Clients", value: "100", suffix: "+", photo: "/about/stat-2.jpg", always: false },
   { label: "Core Services", value: "9", suffix: "+", photo: "/about/stat-3.jpg", always: false },
   { label: "Key Industries", value: "4", suffix: "+", photo: "/about/stat-4.jpg", always: false },
