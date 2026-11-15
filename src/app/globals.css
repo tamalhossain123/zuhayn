@@ -500,7 +500,8 @@ footer { background: #000; padding-top: 76px; overflow: hidden; }
 .hero2-quote .hq-author b { display: block; font-size: 14.5px; font-style: italic; font-family: "Arapey", Georgia, serif; font-weight: 400; }
 .hero2-quote .hq-author span { font-size: 12.5px; color: var(--muted); font-style: italic; font-family: "Arapey", Georgia, serif; }
 .hero2-shape { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; pointer-events: none; }
-.blob-wrap { will-change: transform; }
+.particle-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.blob-wrap { will-change: transform; position: relative; z-index: 1; }
 .blob {
   position: relative; width: min(600px, 72vw); aspect-ratio: 1; 
   border-radius: 42% 58% 63% 37% / 45% 42% 58% 55%;

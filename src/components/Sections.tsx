@@ -14,6 +14,7 @@ import {
 } from "@/data/site";
 import CountUp from "./CountUp";
 import QuoteForm from "./QuoteForm";
+import ParticleRing from "./ParticleRing";
 import Reveal from "./Reveal";
 import SvgArt from "./SvgArt";
 
@@ -419,6 +420,7 @@ export function HeroHome() {
       </div>
 
       <div className="hero2-shape" aria-hidden="true">
+        <ParticleRing />
         <div
           className="blob-wrap"
           style={{
