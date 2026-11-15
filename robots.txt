@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://zuhayn.com
+Sitemap: https://zuhayn.com/sitemap.xml
