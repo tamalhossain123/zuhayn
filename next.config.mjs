@@ -8,7 +8,8 @@ const nextConfig = {
   // which is served from a subpath. Normal builds stay at the domain root.
   basePath: process.env.PAGES_BASE_PATH || "",
   images: {
-    unoptimized: true,
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
   },
 };
 

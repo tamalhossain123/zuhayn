@@ -74,8 +74,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [{ url: "/favicon.png", sizes: "64x64", type: "image/png" }],
-    apple: [{ url: "/favicon.png" }],
+    icon: [
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/favicon.png`,
+        sizes: "64x64",
+        type: "image/png",
+      },
+    ],
+    apple: [{ url: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/favicon.png` }],
   },
 };
 
