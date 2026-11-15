@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Sphere } from "@react-three/drei";
 import type * as THREE from "three";
 import { pointsInner, pointsOuter, type RingPoint } from "./particlePoints";
@@ -51,6 +51,12 @@ export default function ParticleRing() {
 
 const PointCircle = () => {
   const ref = useRef<THREE.Group>(null);
+  const size = useThree((s) => s.size);
+  // On portrait screens the fixed camera makes the ring overflow the
+  // frame and the spheres balloon over the text, so the whole ring is
+  // scaled down in proportion to the aspect ratio. Landscape is untouched.
+  const aspect = size.width / Math.max(1, size.height);
+  const scale = aspect >= 1 ? 1 : Math.max(0.4, aspect * 0.88);
 
   useFrame(({ clock }) => {
     if (ref.current?.rotation) {
@@ -59,7 +65,7 @@ const PointCircle = () => {
   });
 
   return (
-    <group ref={ref}>
+    <group ref={ref} scale={scale}>
       {pointsInner.map((point) => (
         <Point key={point.idx} position={point.position} color={point.color} />
       ))}
