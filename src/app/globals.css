@@ -495,6 +495,7 @@ footer { background: #051423; padding-top: 76px; overflow: hidden; }
 
 /* ---------- hero v2: glass shape hero (reference layout) ---------- */
 .hero2 { position: relative; min-height: 100svh; overflow: hidden; background: radial-gradient(60% 50% at 50% 42%, rgba(18,115,184,.28), rgba(7,26,46,0) 70%), var(--bg); display: flex; flex-direction: column; }
+.hero2::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(5,20,35,.66) 0%, rgba(5,20,35,.30) 34%, rgba(5,20,35,.32) 60%, rgba(5,20,35,.82) 100%), linear-gradient(90deg, rgba(5,20,35,.58) 0%, rgba(5,20,35,.14) 55%, rgba(5,20,35,.34) 100%); }
 .hero2-quote { position: relative; z-index: 3; max-width: 330px; padding: 128px 0 0 0; margin-left: max(20px, calc((100vw - 1300px) / 2 + 20px)); }
 .hero2-quote p { font-size: 13.5px; line-height: 1.65; color: #cfcfcf; font-weight: 500; margin-bottom: 14px; }
 .hero2-quote .hq-author { margin-top: 20px; }
