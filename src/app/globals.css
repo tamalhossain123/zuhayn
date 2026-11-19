@@ -496,8 +496,10 @@ footer { background: #051423; padding-top: 76px; overflow: hidden; }
 /* ---------- hero v2: glass shape hero (reference layout) ---------- */
 .hero2 { position: relative; min-height: 100svh; overflow: hidden; background: radial-gradient(60% 50% at 50% 42%, rgba(18,115,184,.28), rgba(7,26,46,0) 70%), var(--bg); display: flex; flex-direction: column; }
 .hero2::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(5,20,35,.66) 0%, rgba(5,20,35,.30) 34%, rgba(5,20,35,.32) 60%, rgba(5,20,35,.82) 100%), linear-gradient(90deg, rgba(5,20,35,.58) 0%, rgba(5,20,35,.14) 55%, rgba(5,20,35,.34) 100%); }
-.hero2-quote { position: relative; z-index: 3; max-width: 330px; padding: 128px 0 0 0; margin-left: max(20px, calc((100vw - 1300px) / 2 + 20px)); }
-.hero2-quote p { font-size: 13.5px; line-height: 1.65; color: #cfcfcf; font-weight: 500; margin-bottom: 14px; }
+.hero2-quote { position: relative; z-index: 3; max-width: 412px; padding: 128px 0 0 0; margin-left: max(20px, calc((100vw - 1300px) / 2 + 20px)); }
+.hero2-card { background: linear-gradient(150deg, rgba(23,68,114,.52), rgba(9,34,60,.36)); -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%); border: 1px solid rgba(147,205,248,.30); border-radius: 20px; padding: 26px 28px 24px; box-shadow: 0 24px 55px rgba(2,10,20,.48), inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.03); }
+.hero2-quote p { font-size: 13.5px; line-height: 1.65; color: #e8f2fa; font-weight: 500; margin-bottom: 14px; }
+.hero2-card p:last-of-type { margin-bottom: 0; }
 .hero2-quote .hq-author { margin-top: 20px; }
 .hero2-quote .hq-author b { display: block; font-size: 14.5px; font-style: italic; font-family: "Arapey", Georgia, serif; font-weight: 400; }
 .hero2-quote .hq-author span { font-size: 12.5px; color: var(--muted); font-style: italic; font-family: "Arapey", Georgia, serif; }
@@ -555,7 +557,8 @@ footer { background: #051423; padding-top: 76px; overflow: hidden; }
 .hero2-title .l2 { display: block; font-family: "Urbanist", sans-serif; font-weight: 300; }
 .hero2-connect { flex: none; margin-bottom: 14px; }
 @media (max-width: 900px) {
-  .hero2-quote { padding-top: 108px; max-width: 290px; }
+  .hero2-quote { padding-top: 108px; max-width: 332px; }
+  .hero2-card { padding: 20px 20px 18px; border-radius: 16px; }
   .blob { width: min(430px, 86vw); }
   .hero2-bottom { flex-direction: column; align-items: flex-start; }
 }

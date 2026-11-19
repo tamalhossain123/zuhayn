@@ -377,19 +377,21 @@ export function HeroHome() {
   return (
     <div className="hero2">
       <div className="hero2-quote">
-        <p>
-          “ At ZUHAYN, we believe that creativity is the catalyst for growth.
-          As a full-service creative agency, we specialise in transforming bold
-          ideas into compelling realities. ”
-        </p>
-        <p>
-          Whether it&apos;s developing a brand identity, creating a
-          user-friendly website, or executing a dynamic marketing campaign, we
-          approach every project with the same dedication and enthusiasm.
-        </p>
-        <div className="hq-author">
-          <b>{SITE.founder}</b>
-          <span>Chief Executive Officer</span>
+        <div className="hero2-card">
+          <p>
+            “ At ZUHAYN, we believe that creativity is the catalyst for growth.
+            As a full-service creative agency, we specialise in transforming bold
+            ideas into compelling realities. ”
+          </p>
+          <p>
+            Whether it&apos;s developing a brand identity, creating a
+            user-friendly website, or executing a dynamic marketing campaign, we
+            approach every project with the same dedication and enthusiasm.
+          </p>
+          <div className="hq-author">
+            <b>{SITE.founder}</b>
+            <span>Chief Executive Officer</span>
+          </div>
         </div>
       </div>
 
