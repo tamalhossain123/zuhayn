@@ -1,11 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { NAV, SERVICES, SITE } from "@/data/site";
+import { NAV, SERVICES } from "@/data/site";
+import { useContent, useSite } from "@/lib/content";
 import Reveal from "./Reveal";
 
 /** Footer in the reference layout: four widget columns, then a
  *  giant wordmark across the full width and a bottom bar. */
 export default function Footer() {
+  const SITE = useSite();
+  const c = useContent();
+  const services = c?.services?.length ? c.services : SERVICES;
   return (
     <footer>
       <div className="wrap">
@@ -42,7 +48,7 @@ export default function Footer() {
           <div>
             <h4>Services</h4>
             <ul>
-              {SERVICES.slice(0, 6).map((s) => (
+              {services.slice(0, 6).map((s) => (
                 <li key={s.title}>
                   <Link href="/#services">{s.title}</Link>
                 </li>

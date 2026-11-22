@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { NAV, SITE } from "@/data/site";
+import { NAV } from "@/data/site";
+import { useSite } from "@/lib/content";
 import SvgArt from "./SvgArt";
 
 /** Slim fixed bar + slide-in side menu, following the reference
@@ -12,6 +13,7 @@ import SvgArt from "./SvgArt";
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const SITE = useSite();
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);

@@ -12,6 +12,7 @@ import {
   WORK,
   type WorkSample,
 } from "@/data/site";
+import { useContent, useSite } from "@/lib/content";
 import CountUp from "./CountUp";
 import QuoteForm from "./QuoteForm";
 import dynamic from "next/dynamic";
@@ -51,9 +52,11 @@ const FF_DESC: Record<string, string> = {
 };
 
 export function FunFacts() {
+  const c = useContent();
+  const stats = c?.stats?.length ? c.stats : STATS;
   return (
     <Reveal className="funfacts" >
-      {STATS.map((s) => (
+      {stats.map((s) => (
         <div className="funfact" key={s.label}>
           <span className="ff-label">{s.label}</span>
           <span className="ff-num">
@@ -75,6 +78,8 @@ export function FunFacts() {
 
 /* ---------- services list (reference layout) ---------- */
 export function ServiceList() {
+  const c = useContent();
+  const services = c?.services?.length ? c.services : SERVICES;
   return (
     <div>
       <div className="svc-head-row" aria-hidden="true">
@@ -83,7 +88,7 @@ export function ServiceList() {
         <span>↓ Illustration</span>
       </div>
       <div className="svc-list">
-        {SERVICES.map((s, i) => (
+        {services.map((s, i) => (
           <Reveal as="article" className="svc-row" key={s.title}>
             <div className="svc-name">
               <span className="rn">{String(i + 1).padStart(2, "0")}</span>
@@ -158,9 +163,11 @@ export function FeatureWork({ work }: { work: WorkSample }) {
 
 /* ---------- numbered rows (industries) ---------- */
 export function IndustryRows() {
+  const c = useContent();
+  const industries = c?.industries?.length ? c.industries : INDUSTRIES;
   return (
     <div className="numrows">
-      {INDUSTRIES.map((ind, i) => (
+      {industries.map((ind, i) => (
         <Reveal className="numrow" key={ind.title}>
           <span className="rn">{ROMAN[i]}.</span>
           <div>
@@ -176,6 +183,7 @@ export function IndustryRows() {
 
 /* ---------- founder block (team layout) ---------- */
 export function FounderBlock() {
+  const site = useSite();
   return (
     <div className="team-grid">
       <Reveal as="article" className="member">
@@ -188,7 +196,7 @@ export function FounderBlock() {
           />
         </div>
         <div className="m-body">
-          <h3>{SITE.founder}</h3>
+          <h3>{site.founder}</h3>
           <p className="m-role">Founder &amp; CEO</p>
           <p>
             Every project at Zuhayn is led personally by its founder, from the
@@ -222,20 +230,22 @@ export function FounderBlock() {
 
 /* ---------- scrolling client track ---------- */
 export function ClientTrack() {
-  const items = [...CLIENTS, ...CLIENTS];
+  const c = useContent();
+  const clients = c?.clients?.length ? c.clients : CLIENTS;
+  const items = [...clients, ...clients];
   return (
     <div className="track" aria-label="Our clients">
-      {items.map((c, i) => (
-        <article className="track-card" key={`${c.name}-${i}`} aria-hidden={i >= CLIENTS.length}>
+      {items.map((cl, i) => (
+        <article className="track-card" key={`${cl.name}-${i}`} aria-hidden={i >= clients.length}>
           <span className="tc-stars" aria-hidden="true">
             ★★★★★
           </span>
-          <p className="tc-note">{c.note}</p>
+          <p className="tc-note">{cl.note}</p>
           <div className="tc-who">
-            <span className="tc-ava">{c.initials}</span>
+            <span className="tc-ava">{cl.initials}</span>
             <span>
-              <b>{c.name}</b>
-              <span>{c.sector}</span>
+              <b>{cl.name}</b>
+              <span>{cl.sector}</span>
             </span>
           </div>
         </article>
@@ -246,7 +256,9 @@ export function ClientTrack() {
 
 /* ---------- partner strip ---------- */
 export function PartnerStrip() {
-  const names = [...CLIENTS.map((c) => c.name), "ZUHAYN Studio"];
+  const cms = useContent();
+  const clients = cms?.clients?.length ? cms.clients : CLIENTS;
+  const names = [...clients.map((c) => c.name), "ZUHAYN Studio"];
   const row = [...names, ...names];
   return (
     <div className="partner-strip" aria-hidden="true">
@@ -269,6 +281,7 @@ export function ContactBlock({
   withInfo?: boolean;
   ctaOnly?: boolean;
 }) {
+  const site = useSite();
   return (
     <div className="contact-grid2">
       <Reveal className="contact-left">
@@ -284,11 +297,11 @@ export function ContactBlock({
           <div className="info-rows">
             <div className="info-row">
               <span className="il">Phone</span>
-              <a href={SITE.phoneHref}>{SITE.phoneDisplay}</a>
+              <a href={site.phoneHref}>{site.phoneDisplay}</a>
             </div>
             <div className="info-row">
               <span className="il">Studio</span>
-              <span>{SITE.address}</span>
+              <span>{site.address}</span>
             </div>
             <div className="info-row">
               <span className="il">Hours</span>
@@ -302,8 +315,8 @@ export function ContactBlock({
               Request A Free Quote
               <SvgArt index={0} />
             </Link>
-            <a href={SITE.phoneHref} className="btn btn-ghost">
-              Call {SITE.phoneDisplay}
+            <a href={site.phoneHref} className="btn btn-ghost">
+              Call {site.phoneDisplay}
             </a>
           </div>
         ) : (
@@ -374,6 +387,7 @@ export { WORK };
 
 /* ---------- glass-shape hero (reference layout) ---------- */
 export function HeroHome() {
+  const site = useSite();
   return (
     <div className="hero2">
       <div className="hero2-quote">
@@ -389,7 +403,7 @@ export function HeroHome() {
             approach every project with the same dedication and enthusiasm.
           </p>
           <div className="hq-author">
-            <b>{SITE.founder}</b>
+            <b>{site.founder}</b>
             <span>Chief Executive Officer</span>
           </div>
         </div>

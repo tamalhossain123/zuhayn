@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^(config\.php|seed\.json|installed\.lock)$">
+  Require all denied
+</FilesMatch>

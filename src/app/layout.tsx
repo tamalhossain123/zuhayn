@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ContentProvider } from "@/lib/content";
 import Preloader from "@/components/Preloader";
 import { SITE, SERVICES } from "@/data/site";
 import "./globals.css";
@@ -156,9 +157,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <Preloader />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
+        <ContentProvider>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </ContentProvider>
       </body>
     </html>
   );

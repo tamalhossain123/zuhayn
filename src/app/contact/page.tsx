@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FAQS } from "@/components/Faqs";
+import LiveFaqs from "@/components/LiveFaqs";
 import {
   ContactBlock,
   FaqList,
@@ -54,7 +55,7 @@ export default function ContactPage() {
             label="FAQ"
             text="Everything you might want to know before starting a project with us, answered plainly and honestly."
           />
-          <FaqList faqs={FAQS} />
+          <LiveFaqs page="site" fallback={FAQS} />
         </div>
       </section>
 

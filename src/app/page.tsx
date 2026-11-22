@@ -15,7 +15,8 @@ import {
   SectionIntro,
   ServiceList,
 } from "@/components/Sections";
-import { SITE, WORK } from "@/data/site";
+import { SITE } from "@/data/site";
+import LiveWorks from "@/components/LiveWorks";
 
 export const metadata: Metadata = {
   title: "ZUHAYN - Creative & IT Solutions | Digital Marketing & Design Agency, Dhaka",
@@ -68,9 +69,7 @@ export default function HomePage() {
             label="Featured Work"
             text="Scroll-stopping creative for real businesses: sale campaigns, offer ads and brand visuals that turn viewers into buyers, callers and customers."
           />
-          {WORK.slice(0, 3).map((w) => (
-            <FeatureWork key={w.id} work={w} />
-          ))}
+          <LiveWorks limit={3} />
           <div className="more-wrap">
             <Link href="/work" className="btn btn-ghost">
               See All Work

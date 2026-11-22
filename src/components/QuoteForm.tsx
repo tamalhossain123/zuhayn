@@ -2,20 +2,25 @@
 
 import { useState, type FormEvent } from "react";
 import { SITE } from "@/data/site";
+import { API_BASE } from "@/lib/content";
 import SvgArt from "./SvgArt";
 
 /**
  * Quote request form in the original design's .quote styling.
- * Static-site behaviour, same as the original file: validates the
- * required fields in the browser and points the visitor to the fastest
- * direct channels (call / Facebook) - nothing is stored by the form.
+ * Validates the required fields in the browser, then sends the request
+ * to the backend (/api/lead.php), which stores it as a lead in the admin
+ * panel and emails a notification. If the backend is unreachable, the
+ * visitor is pointed to the fastest direct channels (call / Facebook),
+ * exactly like the original static behaviour.
  */
 export default function QuoteForm() {
   const [note, setNote] = useState<{ html: string } | null>(null);
+  const [sending, setSending] = useState(false);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const get = (k: string) => String(fd.get(k) ?? "").trim();
     const required: [string, string][] = [
       ["fullName", "full name"],
@@ -41,9 +46,42 @@ export default function QuoteForm() {
       return;
     }
     const name = get("fullName").replace(/</g, "&lt;");
-    setNote({
+    const fallbackNote = {
       html: `Thanks, ${name}! For the fastest reply, send these details to us directly: call <a href="${SITE.phoneHref}">${SITE.phoneDisplay}</a> or message us on <a href="${SITE.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a> and our team will contact you.`,
-    });
+    };
+    setSending(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/lead.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: get("fullName"),
+          company: get("company"),
+          mobile: get("mobile"),
+          email: get("email"),
+          address: get("address"),
+          businessType: get("businessType"),
+          service: get("service"),
+          message: get("message"),
+          website: get("website"),
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data && data.ok) {
+        form.reset();
+        setNote({
+          html: `Thanks, ${name}! Your request has been received. Our team will contact you shortly. For anything urgent, call <a href="${SITE.phoneHref}">${SITE.phoneDisplay}</a>.`,
+        });
+      } else if (data && data.error) {
+        setNote({ html: String(data.error).replace(/</g, "&lt;") });
+      } else {
+        setNote(fallbackNote);
+      }
+    } catch {
+      setNote(fallbackNote);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -54,6 +92,14 @@ export default function QuoteForm() {
         your project. Fields marked <span style={{ color: "var(--sky)" }}>*</span>{" "}
         are required.
       </p>
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ display: "none" }}
+      />
       <div className="f-grid">
         <div className="f-field">
           <label htmlFor="f-name">
@@ -115,8 +161,8 @@ export default function QuoteForm() {
           <textarea id="f-msg" name="message" placeholder="What do you want to achieve? Any deadline we should know about?" />
         </div>
       </div>
-      <button className="btn btn-primary" type="submit">
-        Send Request
+      <button className="btn btn-primary" type="submit" disabled={sending}>
+        {sending ? "Sending..." : "Send Request"}
         <SvgArt index={0} />
       </button>
       {note ? (

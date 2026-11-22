@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import SvgArt from "@/components/SvgArt";
 import { FAQS } from "@/components/Faqs";
+import LiveFaqs from "@/components/LiveFaqs";
 import {
   AboutShowcase,
   ContactBlock,
@@ -142,7 +143,7 @@ export default function AboutPage() {
             label="FAQ"
             text="Everything you might want to know before starting a project with us, answered plainly and honestly."
           />
-          <FaqList faqs={FAQS} />
+          <LiveFaqs page="site" fallback={FAQS} />
         </div>
       </section>
 

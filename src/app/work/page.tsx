@@ -8,7 +8,7 @@ import {
   PartnerStrip,
   SectionIntro,
 } from "@/components/Sections";
-import { WORK } from "@/data/site";
+import LiveWorks from "@/components/LiveWorks";
 
 export const metadata: Metadata = {
   title: "Our Work & Industries - ZUHAYN, Dhaka",
@@ -50,9 +50,7 @@ export default function WorkPage() {
             label="Projects"
             text="Every sample below was built around one goal: turning viewers into buyers, callers and customers for the business behind it."
           />
-          {WORK.map((w) => (
-            <FeatureWork key={w.id} work={w} />
-          ))}
+          <LiveWorks />
         </div>
       </section>
 
