@@ -562,3 +562,24 @@ footer { background: #051423; padding-top: 76px; overflow: hidden; }
   .blob { width: min(430px, 86vw); }
   .hero2-bottom { flex-direction: column; align-items: flex-start; }
 }
+
+/* ---------- pricing page ---------- */
+.price-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; margin-bottom: 34px; }
+.price-head h2 { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.12; letter-spacing: -0.01em; color: #f2f7fb; }
+.price-head p { max-width: 480px; color: var(--muted); font-size: 15px; line-height: 1.65; }
+.price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.price-card { position: relative; background: linear-gradient(160deg, var(--panel), rgba(9,34,60,.55)); border: 1px solid var(--line); border-radius: 22px; padding: 32px 28px 28px; display: flex; flex-direction: column; }
+.price-card.pop { border-color: rgba(47,185,236,.55); box-shadow: 0 24px 55px rgba(2,10,20,.45), inset 0 1px 0 rgba(255,255,255,.08); }
+.pop-badge { position: absolute; top: -13px; left: 28px; background: linear-gradient(135deg, #2fb9ec, #1273b8); color: #ffffff; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 6px 13px; border-radius: 999px; }
+.price-tier { font-size: 12.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--sky); }
+.price-amt { display: block; font-size: 40px; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; margin-top: 12px; line-height: 1; }
+.price-per { display: block; color: var(--muted); font-size: 13.5px; margin-top: 6px; }
+.price-feats { list-style: none; margin: 24px 0 28px; padding: 0; display: grid; gap: 11px; }
+.price-feats li { position: relative; padding-left: 27px; color: #d7e6f2; font-size: 14.5px; line-height: 1.55; }
+.price-feats li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--sky); font-weight: 800; }
+.price-cta { margin-top: auto; text-align: center; }
+.price-note { margin-top: 18px; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+@media (max-width: 1080px) {
+  .price-grid { grid-template-columns: 1fr; max-width: 560px; }
+  .price-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
