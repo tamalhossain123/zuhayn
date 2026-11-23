@@ -108,6 +108,9 @@ function shell() {
     <div class="content">
       <header class="topbar">
         <div class="search">${ICONS.search}<input id="globalSearch" type="search" placeholder="Search leads by name, company, phone..." value="${esc(leadQuery)}"></div>
+        <nav class="pillmenu" aria-label="Main views">
+          ${[["dashboard","Dashboard"],["leads","Leads"],["services","Services"],["packages","Packages"],["settings","Settings"]].map(([k,l]) => `<button data-nav="${k}">${l}</button>`).join("")}
+        </nav>
         <div class="sp"></div>
         <a class="top-link" href="../" target="_blank">${ICONS.external} View website</a>
         <div class="userchip"><div class="uc-ava">${esc(initial)}</div>
@@ -170,28 +173,110 @@ async function viewDashboard() {
     if (me.csrf) CSRF = me.csrf;
     refreshBadge();
     const c = me.counts;
-    const leads = await get("/admin/leads.php");
-    const latest = (leads.leads || []).slice(0, 5);
-    document.getElementById("dash").innerHTML = `
+    const [leadsR, stR] = await Promise.all([
+      get("/admin/leads.php").catch(() => ({ leads: [] })),
+      get("/admin/content.php?resource=settings").catch(() => ({ settings: {} })),
+    ]);
+    const leads = leadsR.leads || [];
+    const latest = leads.slice(0, 6);
+    const st = stR.settings || {};
+    const pipe = [
+      ["new", "New", c.leads_new], ["contacted", "Contacted", c.leads_contacted],
+      ["done", "Done", c.leads_done], ["spam", "Spam", c.leads_spam],
+    ];
+    const pipeMax = Math.max(1, ...pipe.map((p) => p[2]));
+    const contentRows = [
+      ["services", "Services", c.services], ["packages", "Packages & prices", c.packages],
+      ["works", "Works", c.works], ["clients", "Clients", c.clients],
+      ["industries", "Industries", c.industries], ["faqs", "FAQs", c.faqs],
+    ];
+    const tiles = [
+      ["leads", "Leads inbox", "Quote requests from the website"],
+      ["packages", "Packages & prices", "Edit package prices and features"],
+      ["services", "Services", "The services shown on the site"],
+      ["works", "Works", "Featured projects and case cards"],
+      ["clients", "Clients", "Client names in the scrolling track"],
+      ["settings", "Site settings", "Phone, address, social links"],
+    ];
+
+    // Leads per day for the last 7 days (hand-rolled SVG bars, no library).
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i);
+      days.push({ key: d.toISOString().slice(0, 10), label: d.toLocaleDateString(undefined, { weekday: "short" }), n: 0, today: i === 0 });
+    }
+    leads.forEach((l) => {
+      const k = String(l.created_at || "").slice(0, 10);
+      const b = days.find((x) => x.key === k);
+      if (b) b.n++;
+    });
+    const cmax = Math.max(1, ...days.map((d) => d.n));
+    const BW = 64, GAP = 22, CH = 118, PADT = 22;
+    const chartSvg = `<svg viewBox="0 0 ${days.length * BW + (days.length - 1) * GAP} ${CH + PADT + 22}" role="img" aria-label="Leads per day, last 7 days">` +
+      days.map((d, i) => {
+        const h = Math.max(3, Math.round((d.n / cmax) * CH));
+        const x = i * (BW + GAP), y = PADT + (CH - h);
+        return `<rect class="bar${d.today ? " today" : ""}" x="${x}" y="${y}" width="${BW}" height="${h}" rx="7"></rect>` +
+          `<text class="val" x="${x + BW / 2}" y="${y - 7}" text-anchor="middle">${d.n}</text>` +
+          `<text class="lab" x="${x + BW / 2}" y="${PADT + CH + 17}" text-anchor="middle">${d.today ? "Today" : d.label}</text>`;
+      }).join("") +
+      `<line class="axis" x1="0" y1="${PADT + CH + .5}" x2="${days.length * BW + (days.length - 1) * GAP}" y2="${PADT + CH + .5}"></line></svg>`;
+    const dash = document.getElementById("dash");
+    dash.innerHTML = `
       <div class="cards">
-        <div class="stat hot"><b>${c.leads_new}</b><span>New leads waiting</span></div>
-        <div class="stat"><b>${c.leads_total}</b><span>Total leads</span></div>
-        <div class="stat"><b>${c.services}</b><span>Services</span></div>
-        <div class="stat"><b>${c.packages}</b><span>Packages</span></div>
+        <div class="stat accent"><div class="ic">${ICONS.leads}</div><b>${c.leads_new}</b><span>New leads waiting</span><span class="sub2">${c.leads_week} received in the last 7 days</span></div>
+        <div class="stat"><div class="ic">${ICONS.dashboard}</div><b>${c.leads_total}</b><span>Total leads</span><span class="sub2">${c.leads_contacted} contacted, ${c.leads_done} done</span></div>
+        <div class="stat"><div class="ic">${ICONS.services}</div><b>${c.services}</b><span>Services live</span><span class="sub2">Shown across the whole website</span></div>
+        <div class="stat"><div class="ic">${ICONS.packages}</div><b>${c.packages}</b><span>Packages</span><span class="sub2">Prices on the pricing page</span></div>
       </div>
-      <div class="card flat"><h3>Manage content</h3>
-        <div class="quick">
-          <button data-go="leads">Leads inbox</button>
-          <button data-go="packages">Packages &amp; prices</button>
-          <button data-go="services">Services</button>
-          <button data-go="works">Works</button>
-          <button data-go="settings">Site settings</button>
+      <div class="dash-grid">
+        <div class="dash-col">
+        <div class="card">
+          <div class="card-head"><h3>Lead pipeline</h3><button class="ch-link" data-go="leads">Open inbox</button></div>
+          ${pipe.map(([k, label, n]) => `
+            <div class="pipe-row" data-pipe="${k}">
+              <div class="pl"><i class="pf-${k}"></i>${label}</div>
+              <div class="pipe-track"><div class="pipe-fill pf-${k}" style="width:${Math.round((n / pipeMax) * 100)}%"></div></div>
+              <div class="pc">${n}</div>
+            </div>`).join("")}
+          <p style="color:var(--muted);font-size:13.5px;margin:14px 0 2px">Every quote form submission lands in the inbox as a new lead. Move it along as you contact the client and finish the job.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Leads this week</h3><button class="ch-link" data-go="leads">Open inbox</button></div>
+          <div class="chart-wrap">${chartSvg}</div>
+          <p style="color:var(--muted);font-size:13.5px;margin:10px 0 2px">${c.leads_week} lead${c.leads_week === 1 ? "" : "s"} in the last 7 days, ${c.leads_total} all time.</p>
+        </div>
+        </div>
+        <div class="dash-side">
+          <div class="card">
+            <div class="card-head"><h3>Website</h3><button class="ch-link" data-go="settings">Edit details</button></div>
+            <div class="wrow"><span>Business</span>${esc(st.legal_name || st.site_name || "ZUHAYN")}</div>
+            <div class="wrow"><span>Phone</span>${esc(st.phone_display || "")}</div>
+            <div class="wrow"><span>Address</span>${esc(st.address || "")}</div>
+            <div class="wrow"><span>Founder</span>${esc(st.founder || "")}, since ${esc(st.founded || "")}</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Content at a glance</h3></div>
+            ${contentRows.map(([k, label, n]) => `
+              <div class="crow"><div class="cic">${ICONS[k] || ICONS.dashboard}</div><div class="cl">${label}</div><div class="cc">${n}</div><button class="cm" data-go="${k}">Manage</button></div>`).join("")}
+          </div>
         </div>
       </div>
-      <h3 style="margin:20px 0 12px;font-size:var(--fs-h3)">Latest leads</h3>
-      ${latest.length ? latest.map(leadCard).join("") : '<div class="card">No leads yet. New quote form submissions will appear here.</div>'}`;
-    bindLeadCards();
-    document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go)));
+      <div class="quick tiles" style="margin-bottom:26px">
+        ${tiles.map(([k, t, d]) => `<button class="qtile" data-go="${k}"><div class="ic">${ICONS[k] || ""}</div><div><b>${t}</b><span>${d}</span></div></button>`).join("")}
+      </div>
+      <div class="card table-card">
+        <div class="card-head"><h3>Latest leads</h3><button class="ch-link" data-go="leads">View all</button></div>
+        ${latest.length ? latest.map((l) => `
+          <div class="lrow st-${esc(l.status)}" data-open-leads>
+            <div class="lava">${esc((l.full_name || "?").trim().charAt(0).toUpperCase())}</div>
+            <div class="lm"><b>${esc(l.full_name)}</b><span>${esc(l.company || "")}${l.service ? " · " + esc(l.service) : ""}</span></div>
+            <div class="lr"><span class="pill"><i></i><em style="font-style:normal">${esc(l.status)}</em></span><span class="when">${esc((l.created_at || "").slice(0, 10))}</span></div>
+          </div>`).join("") : '<p style="color:var(--muted);margin:6px 0 2px">No leads yet. New quote form submissions will appear here.</p>'}
+      </div>`;
+    dash.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go)));
+    dash.querySelectorAll("[data-pipe]").forEach((r) => r.addEventListener("click", () => { leadFilter = r.dataset.pipe; show("leads"); }));
+    dash.querySelectorAll("[data-open-leads]").forEach((r) => r.addEventListener("click", () => { leadFilter = ""; show("leads"); }));
   } catch (e) { document.getElementById("dash").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 
