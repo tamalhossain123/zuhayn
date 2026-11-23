@@ -54,7 +54,33 @@ const ICONS = {
   logout: IC('<path d="M13 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H13"/><path d="M10.5 12H21"/><path d="M17.5 8.5 21 12l-3.5 3.5"/>'),
   external: IC('<path d="M14 4h6v6"/><path d="M20 4 11.5 12.5"/><path d="M19 13.5V19a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 4 19V7a1.5 1.5 0 0 1 1.5-1.5H11"/>'),
   search: IC('<circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 20.5 20.5"/>'),
+  eye: IC('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>'),
+  eyeOff: IC('<path d="M4 4l16 16"/><path d="M9.9 6.2A9.4 9.4 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17.6 17.6 0 0 1-3.3 3.7M6 8A16.9 16.9 0 0 0 2.5 12S6 18.5 12 18.5c1.2 0 2.3-.3 3.3-.7"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'),
 };
+
+/* Wrap every password input in a scope with a show/hide eye button. */
+function enhancePasswords(scope) {
+  (scope || document).querySelectorAll('input[type="password"]').forEach((inp) => {
+    if (inp.closest(".pw-wrap")) return;
+    const wrap = document.createElement("span");
+    wrap.className = "pw-wrap";
+    inp.parentNode.insertBefore(wrap, inp);
+    wrap.appendChild(inp);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "pw-eye";
+    btn.setAttribute("aria-label", "Show password");
+    btn.innerHTML = ICONS.eye;
+    btn.addEventListener("click", () => {
+      const show = inp.type === "password";
+      inp.type = show ? "text" : "password";
+      btn.innerHTML = show ? ICONS.eyeOff : ICONS.eye;
+      btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
+      inp.focus();
+    });
+    wrap.appendChild(btn);
+  });
+}
 
 /* ---------------- auth screens ---------------- */
 function authScreen(mode) {
@@ -71,6 +97,7 @@ function authScreen(mode) {
       <button class="btn" style="width:100%">${isSetup ? "Create account and finish setup" : "Log in"}</button>
     </form>
   </div></div>`;
+  enhancePasswords(app);
   document.getElementById("authForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
@@ -522,6 +549,7 @@ async function viewUsers() {
       <div class="row-actions"><span class="saved" id="nuMsg"></span><button class="btn small" id="nuBtn">Create user</button></div>
     </div>
     <div id="userList">Loading...</div>`;
+  enhancePasswords(main());
   const roleSel = document.getElementById("nuRole");
   roleSel.addEventListener("change", () => {
     document.getElementById("nuRoleDesc").textContent = ROLE_DESCS[roleSel.value] || "";
@@ -559,6 +587,7 @@ async function viewUsers() {
           ${u.self ? "" : '<button class="btn small danger" data-u="del">Delete user</button>'}
         </div>
       </div>`).join("");
+    enhancePasswords(box);
     box.querySelectorAll("[data-user]").forEach((card) => {
       const id = Number(card.dataset.user);
       card.querySelector('[data-u="save"]').addEventListener("click", async () => {
@@ -600,6 +629,7 @@ async function viewSettings() {
       </div>
       <div class="row-actions"><button class="btn small" id="pwBtn">Change password</button></div>
     </div>`;
+  enhancePasswords(main());
   try {
     const r = await get("/admin/content.php?resource=settings");
     document.getElementById("setBox").innerHTML = `<div class="card">
