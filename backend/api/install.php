@@ -11,17 +11,21 @@ function zu_ddl(string $driver): array
     $ai = $driver === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
     $ts = $driver === 'sqlite' ? 'TEXT DEFAULT CURRENT_TIMESTAMP' : 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP';
     $tsu = $driver === 'sqlite' ? 'TEXT DEFAULT CURRENT_TIMESTAMP' : 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+    // The cPanel-created database may default to latin1, which rejects the
+    // taka sign and Bengali text in the seed data (MySQL error 1366), so
+    // MySQL tables are created with an explicit utf8mb4 charset.
+    $cs = $driver === 'sqlite' ? '' : ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
     return [
-        "CREATE TABLE IF NOT EXISTS settings (k VARCHAR(80) PRIMARY KEY, v TEXT)",
-        "CREATE TABLE IF NOT EXISTS admins (id $ai, username VARCHAR(60) UNIQUE NOT NULL, pass_hash VARCHAR(255) NOT NULL, created_at $ts)",
-        "CREATE TABLE IF NOT EXISTS leads (id $ai, full_name VARCHAR(120) NOT NULL, company VARCHAR(160) NOT NULL, mobile VARCHAR(40) NOT NULL, email VARCHAR(160) NOT NULL, address VARCHAR(255) NOT NULL, business_type VARCHAR(80) NOT NULL, service VARCHAR(120) DEFAULT '', message TEXT, status VARCHAR(16) NOT NULL DEFAULT 'new', ip VARCHAR(45) DEFAULT '', created_at $ts, updated_at $tsu)",
-        "CREATE TABLE IF NOT EXISTS services (id $ai, title VARCHAR(120) NOT NULL, description TEXT, tags TEXT, icon INT DEFAULT 0, sort INT DEFAULT 0, active INT DEFAULT 1)",
-        "CREATE TABLE IF NOT EXISTS packages (id $ai, service_id INT NOT NULL, name VARCHAR(60) NOT NULL, price VARCHAR(40) NOT NULL, per VARCHAR(40) DEFAULT '', feats TEXT, popular INT DEFAULT 0, sort INT DEFAULT 0)",
-        "CREATE TABLE IF NOT EXISTS works (slug VARCHAR(40) PRIMARY KEY, photo VARCHAR(255) DEFAULT '', stage VARCHAR(60) DEFAULT '', art INT DEFAULT 0, logo VARCHAR(160) DEFAULT '', offer VARCHAR(80) DEFAULT '', headline_top VARCHAR(120) DEFAULT '', headline_em VARCHAR(120) DEFAULT '', sub VARCHAR(255) DEFAULT '', cta VARCHAR(80) DEFAULT '', tag VARCHAR(160) DEFAULT '', kind VARCHAR(80) DEFAULT '', description TEXT, sort INT DEFAULT 0)",
-        "CREATE TABLE IF NOT EXISTS clients (id $ai, name VARCHAR(120) NOT NULL, sector VARCHAR(160) DEFAULT '', note TEXT, initials VARCHAR(8) DEFAULT '', icon INT DEFAULT 0, sort INT DEFAULT 0)",
-        "CREATE TABLE IF NOT EXISTS industries (id $ai, icon INT DEFAULT 0, title VARCHAR(160) NOT NULL, description TEXT, tags TEXT, sort INT DEFAULT 0)",
-        "CREATE TABLE IF NOT EXISTS faqs (id $ai, page VARCHAR(24) NOT NULL DEFAULT 'site', q TEXT NOT NULL, a TEXT NOT NULL, sort INT DEFAULT 0)",
-        "CREATE TABLE IF NOT EXISTS stats (id $ai, value INT DEFAULT 0, suffix VARCHAR(8) DEFAULT '', label VARCHAR(200) DEFAULT '', plain INT DEFAULT 0, sort INT DEFAULT 0)",
+        "CREATE TABLE IF NOT EXISTS settings (k VARCHAR(80) PRIMARY KEY, v TEXT)$cs",
+        "CREATE TABLE IF NOT EXISTS admins (id $ai, username VARCHAR(60) UNIQUE NOT NULL, pass_hash VARCHAR(255) NOT NULL, role VARCHAR(24) NOT NULL DEFAULT 'super_admin', created_at $ts)$cs",
+        "CREATE TABLE IF NOT EXISTS leads (id $ai, full_name VARCHAR(120) NOT NULL, company VARCHAR(160) NOT NULL, mobile VARCHAR(40) NOT NULL, email VARCHAR(160) NOT NULL, address VARCHAR(255) NOT NULL, business_type VARCHAR(80) NOT NULL, service VARCHAR(120) DEFAULT '', message TEXT, status VARCHAR(16) NOT NULL DEFAULT 'new', ip VARCHAR(45) DEFAULT '', created_at $ts, updated_at $tsu)$cs",
+        "CREATE TABLE IF NOT EXISTS services (id $ai, title VARCHAR(120) NOT NULL, description TEXT, tags TEXT, icon INT DEFAULT 0, sort INT DEFAULT 0, active INT DEFAULT 1)$cs",
+        "CREATE TABLE IF NOT EXISTS packages (id $ai, service_id INT NOT NULL, name VARCHAR(60) NOT NULL, price VARCHAR(40) NOT NULL, per VARCHAR(40) DEFAULT '', feats TEXT, popular INT DEFAULT 0, sort INT DEFAULT 0)$cs",
+        "CREATE TABLE IF NOT EXISTS works (slug VARCHAR(40) PRIMARY KEY, photo VARCHAR(255) DEFAULT '', stage VARCHAR(60) DEFAULT '', art INT DEFAULT 0, logo VARCHAR(160) DEFAULT '', offer VARCHAR(80) DEFAULT '', headline_top VARCHAR(120) DEFAULT '', headline_em VARCHAR(120) DEFAULT '', sub VARCHAR(255) DEFAULT '', cta VARCHAR(80) DEFAULT '', tag VARCHAR(160) DEFAULT '', kind VARCHAR(80) DEFAULT '', description TEXT, sort INT DEFAULT 0)$cs",
+        "CREATE TABLE IF NOT EXISTS clients (id $ai, name VARCHAR(120) NOT NULL, sector VARCHAR(160) DEFAULT '', note TEXT, initials VARCHAR(8) DEFAULT '', icon INT DEFAULT 0, sort INT DEFAULT 0)$cs",
+        "CREATE TABLE IF NOT EXISTS industries (id $ai, icon INT DEFAULT 0, title VARCHAR(160) NOT NULL, description TEXT, tags TEXT, sort INT DEFAULT 0)$cs",
+        "CREATE TABLE IF NOT EXISTS faqs (id $ai, page VARCHAR(24) NOT NULL DEFAULT 'site', q TEXT NOT NULL, a TEXT NOT NULL, sort INT DEFAULT 0)$cs",
+        "CREATE TABLE IF NOT EXISTS stats (id $ai, value INT DEFAULT 0, suffix VARCHAR(8) DEFAULT '', label VARCHAR(200) DEFAULT '', plain INT DEFAULT 0, sort INT DEFAULT 0)$cs",
     ];
 }
 
@@ -123,6 +127,15 @@ if ($method === 'POST') {
     try {
         $db = zu_db();
         $driver = (string)(zu_config()['db_driver'] ?? 'mysql');
+        if ($driver === 'mysql') {
+            // A previous setup attempt may have left tables behind with the
+            // database default charset and a partial seed. The installer only
+            // runs before any admin account exists, so dropping the CMS
+            // tables here is safe and makes a retry start completely clean.
+            foreach (['settings', 'admins', 'leads', 'services', 'packages', 'works', 'clients', 'industries', 'faqs', 'stats'] as $t) {
+                $db->exec("DROP TABLE IF EXISTS `$t`");
+            }
+        }
         foreach (zu_ddl($driver) as $sql) $db->exec($sql);
         zu_seed($db);
         $hash = password_hash($password, PASSWORD_DEFAULT);

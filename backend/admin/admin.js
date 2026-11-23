@@ -5,7 +5,17 @@ const app = document.getElementById("app");
 const toastEl = document.getElementById("toast");
 let CSRF = "";
 let USERNAME = "";
+let ROLE = "super_admin";
 let SERVICES = []; // cached for package editor selects
+
+/* Roles: super_admin sees everything, admin has no user management,
+   editor only manages website content (no leads, settings or users). */
+const ROLE_LABELS = { super_admin: "Super Admin", admin: "Admin", editor: "Editor" };
+function canSee(key) {
+  if (ROLE === "super_admin") return true;
+  if (ROLE === "admin") return key !== "users";
+  return !["leads", "settings", "users"].includes(key); // editor
+}
 
 function toast(msg) {
   toastEl.textContent = msg;
@@ -40,6 +50,7 @@ const ICONS = {
   faqs: IC('<rect x="3.5" y="4.5" width="17" height="12" rx="2.5"/><path d="M8 16.5v3.8l4.8-3.8"/>'),
   stats: IC('<path d="M3.5 20.5h17"/><path d="M7 20.5v-8M12 20.5V6M17 20.5v-11"/>'),
   settings: IC('<path d="M4 8h8.5M18.5 8H20"/><circle cx="15.5" cy="8" r="2.3"/><path d="M4 16h2.5M12.5 16H20"/><circle cx="9.5" cy="16" r="2.3"/>'),
+  users: IC('<circle cx="10" cy="8.5" r="3.2"/><path d="M4.5 19.5c.6-3.1 2.7-4.6 5.5-4.6 1.5 0 2.8.5 3.8 1.4"/><path d="M18.5 8.5v6M15.5 11.5h6"/>'),
   logout: IC('<path d="M13 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H13"/><path d="M10.5 12H21"/><path d="M17.5 8.5 21 12l-3.5 3.5"/>'),
   external: IC('<path d="M14 4h6v6"/><path d="M20 4 11.5 12.5"/><path d="M19 13.5V19a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 4 19V7a1.5 1.5 0 0 1 1.5-1.5H11"/>'),
   search: IC('<circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 20.5 20.5"/>'),
@@ -72,7 +83,7 @@ function authScreen(mode) {
         authScreen("login");
       } else {
         const r = await send("/admin/login.php", "POST", payload);
-        CSRF = r.csrf; USERNAME = r.username;
+        CSRF = r.csrf; USERNAME = r.username; ROLE = r.role || "super_admin";
         shell();
       }
     } catch (ex) { err.textContent = ex.message; }
@@ -90,6 +101,7 @@ const NAV = [
   ["industries", "Industries"],
   ["faqs", "FAQs"],
   ["stats", "Stats"],
+  ["users", "Users"],
   ["settings", "Settings"],
 ];
 let currentView = "dashboard";
@@ -100,7 +112,7 @@ function shell() {
   <div class="layout">
     <aside class="rail">
       <a class="mark" href="../" target="_blank" title="Open website">Z<i>.</i></a>
-      ${NAV.map(([k, l]) => `<button class="rail-btn" data-nav="${k}" aria-label="${l}">${ICONS[k] || ""}<span class="tip">${l}</span>${k === "leads" ? '<span class="rb-badge hidden" id="leadBadge"></span>' : ""}</button>`).join("")}
+      ${NAV.filter(([k]) => canSee(k)).map(([k, l]) => `<button class="rail-btn" data-nav="${k}" aria-label="${l}">${ICONS[k] || ""}<span class="tip">${l}</span>${k === "leads" ? '<span class="rb-badge hidden" id="leadBadge"></span>' : ""}</button>`).join("")}
       <div class="sp"></div>
       <button class="rail-btn" id="logoutBtn" aria-label="Log out">${ICONS.logout}<span class="tip">Log out</span></button>
       <div class="avatar" title="${esc(USERNAME)}">${esc(initial)}</div>
@@ -109,12 +121,12 @@ function shell() {
       <header class="topbar">
         <div class="search">${ICONS.search}<input id="globalSearch" type="search" placeholder="Search leads by name, company, phone..." value="${esc(leadQuery)}"></div>
         <nav class="pillmenu" aria-label="Main views">
-          ${[["dashboard","Dashboard"],["leads","Leads"],["services","Services"],["packages","Packages"],["settings","Settings"]].map(([k,l]) => `<button data-nav="${k}">${l}</button>`).join("")}
+          ${[["dashboard","Dashboard"],["leads","Leads"],["services","Services"],["packages","Packages"],["users","Users"],["settings","Settings"]].filter(([k]) => canSee(k)).map(([k,l]) => `<button data-nav="${k}">${l}</button>`).join("")}
         </nav>
         <div class="sp"></div>
         <a class="top-link" href="../" target="_blank">${ICONS.external} View website</a>
         <div class="userchip"><div class="uc-ava">${esc(initial)}</div>
-          <div class="uc-meta"><div class="uc-name">${esc(USERNAME)}</div><div class="uc-role">Administrator</div></div></div>
+          <div class="uc-meta"><div class="uc-name">${esc(USERNAME)}</div><div class="uc-role">${esc(ROLE_LABELS[ROLE] || "Admin")}</div></div></div>
       </header>
       <main id="main"></main>
     </div>
@@ -152,6 +164,7 @@ function markNav(key) {
   app.querySelectorAll("[data-nav]").forEach((b) => b.classList.toggle("on", b.dataset.nav === key));
 }
 function show(key) {
+  if (!canSee(key)) key = "dashboard";
   currentView = key;
   markNav(key);
   const m = main();
@@ -161,7 +174,7 @@ function show(key) {
   ({ dashboard: viewDashboard, leads: viewLeads, services: () => viewResource("services"),
      packages: viewPackages, works: () => viewResource("works"), clients: () => viewResource("clients"),
      industries: () => viewResource("industries"), faqs: () => viewResource("faqs"),
-     stats: () => viewResource("stats"), settings: viewSettings }[key] || viewDashboard)();
+     stats: () => viewResource("stats"), users: viewUsers, settings: viewSettings }[key] || viewDashboard)();
 }
 const main = () => document.getElementById("main");
 
@@ -196,8 +209,9 @@ async function viewDashboard() {
       ["services", "Services", "The services shown on the site"],
       ["works", "Works", "Featured projects and case cards"],
       ["clients", "Clients", "Client names in the scrolling track"],
+      ["users", "Users & roles", "Add accounts for website maintenance"],
       ["settings", "Site settings", "Phone, address, social links"],
-    ];
+    ].filter(([k]) => canSee(k));
 
     // Leads per day for the last 7 days (hand-rolled SVG bars, no library).
     const days = [];
@@ -487,6 +501,89 @@ function bindPkgCards() {
   });
 }
 
+/* ---------------- users & roles (super admin only) ---------------- */
+const ROLE_DESCS = {
+  super_admin: "Full access, including user management",
+  admin: "Leads, content and settings, no user management",
+  editor: "Website content only, no leads or settings",
+};
+async function viewUsers() {
+  main().innerHTML = `<h2>Users</h2><p class="sub">Accounts for website maintenance. Only a super admin can manage users.</p>
+    <div class="card">
+      <h3>Add a new user</h3>
+      <div class="grid3">
+        <div class="field"><label>Username</label><input id="nuName" autocomplete="off" placeholder="e.g. forhad"></div>
+        <div class="field"><label>Password (min 8)</label><input id="nuPass" type="password" autocomplete="new-password"></div>
+        <div class="field"><label>Role</label><select id="nuRole">
+          ${Object.keys(ROLE_LABELS).map((r) => `<option value="${r}" ${r === "editor" ? "selected" : ""}>${ROLE_LABELS[r]}</option>`).join("")}
+        </select></div>
+      </div>
+      <p style="color:var(--muted);font-size:13.5px;margin:2px 0 6px" id="nuRoleDesc">${esc(ROLE_DESCS.editor)}</p>
+      <div class="row-actions"><span class="saved" id="nuMsg"></span><button class="btn small" id="nuBtn">Create user</button></div>
+    </div>
+    <div id="userList">Loading...</div>`;
+  const roleSel = document.getElementById("nuRole");
+  roleSel.addEventListener("change", () => {
+    document.getElementById("nuRoleDesc").textContent = ROLE_DESCS[roleSel.value] || "";
+  });
+  document.getElementById("nuBtn").addEventListener("click", async () => {
+    const msg = document.getElementById("nuMsg");
+    try {
+      await send("/admin/users.php", "POST", {
+        username: document.getElementById("nuName").value.trim(),
+        password: document.getElementById("nuPass").value,
+        role: roleSel.value,
+      });
+      toast("User created");
+      viewUsers();
+    } catch (e) { msg.textContent = e.message; msg.style.color = "var(--bad)"; }
+  });
+  try {
+    const r = await get("/admin/users.php");
+    const box = document.getElementById("userList");
+    box.innerHTML = r.users.map((u) => `
+      <div class="card" data-user="${u.id}">
+        <div class="lead-head"><b>${esc(u.username)}</b>
+          <span class="pill"><i></i><em style="font-style:normal">${esc(ROLE_LABELS[u.role] || u.role)}</em></span>
+          ${u.self ? '<span class="co">This is you</span>' : ""}
+          <span class="when">${esc((u.created_at || "").slice(0, 10))}</span></div>
+        <div class="grid2">
+          <div class="field"><label>Role</label><select data-u="role" ${u.self ? "disabled" : ""}>
+            ${Object.keys(ROLE_LABELS).map((role) => `<option value="${role}" ${role === u.role ? "selected" : ""}>${ROLE_LABELS[role]}</option>`).join("")}
+          </select></div>
+          <div class="field"><label>Reset password (min 8)</label><input data-u="pass" type="password" placeholder="Leave empty to keep current" autocomplete="new-password"></div>
+        </div>
+        <p style="color:var(--muted);font-size:13.5px;margin:0 0 4px">${esc(ROLE_DESCS[u.role] || "")}</p>
+        <div class="row-actions"><span class="saved"></span>
+          <button class="btn small" data-u="save">Save changes</button>
+          ${u.self ? "" : '<button class="btn small danger" data-u="del">Delete user</button>'}
+        </div>
+      </div>`).join("");
+    box.querySelectorAll("[data-user]").forEach((card) => {
+      const id = Number(card.dataset.user);
+      card.querySelector('[data-u="save"]').addEventListener("click", async () => {
+        try {
+          const body = { id, role: card.querySelector('[data-u="role"]').value };
+          const pw = card.querySelector('[data-u="pass"]').value;
+          if (pw) body.password = pw;
+          await send("/admin/users.php", "PATCH", body);
+          card.querySelector(".saved").textContent = "Saved";
+          toast("User updated");
+          viewUsers();
+        } catch (e) { toast(e.message); }
+      });
+      const del = card.querySelector('[data-u="del"]');
+      if (del) del.addEventListener("click", async () => {
+        if (!confirm("Delete this user permanently? They will no longer be able to log in.")) return;
+        try {
+          await send("/admin/users.php", "DELETE", { id });
+          card.remove(); toast("User deleted");
+        } catch (e) { toast(e.message); }
+      });
+    });
+  } catch (e) { document.getElementById("userList").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
 /* ---------------- settings ---------------- */
 const SETTING_FIELDS = [
   ["site_name", "Site name"], ["legal_name", "Legal name"], ["phone_display", "Phone (display)"],
@@ -527,7 +624,7 @@ async function viewSettings() {
 (async function boot() {
   try {
     const me = await get("/admin/me.php");
-    CSRF = me.csrf; USERNAME = me.username;
+    CSRF = me.csrf; USERNAME = me.username; ROLE = me.role || "super_admin";
     shell();
     return;
   } catch (e) { /* not logged in */ }

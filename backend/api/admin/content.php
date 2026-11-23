@@ -63,6 +63,7 @@ function zu_coerce($v, string $type)
 
 try {
     if ($resource === 'settings') {
+        zu_require_role(['super_admin', 'admin']);
         if ($method === 'GET') {
             $out = [];
             foreach ($db->query('SELECT k, v FROM settings') as $r) $out[$r['k']] = $r['v'];

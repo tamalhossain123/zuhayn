@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require dirname(__DIR__) . '/bootstrap.php';
 
-zu_require_admin();
+zu_require_role(['super_admin', 'admin']);
 $db = zu_db();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 

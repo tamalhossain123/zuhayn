@@ -12,7 +12,8 @@ $password = (string)($body['password'] ?? '');
 
 try {
     $db = zu_db();
-    $st = $db->prepare('SELECT id, pass_hash FROM admins WHERE username = ?');
+    zu_migrate($db);
+    $st = $db->prepare('SELECT id, pass_hash, role FROM admins WHERE username = ?');
     $st->execute([$username]);
     $row = $st->fetch();
     if (!$row || !password_verify($password, (string)$row['pass_hash'])) {
@@ -20,11 +21,13 @@ try {
         usleep(400000);
         zu_json(['ok' => false, 'error' => 'Wrong username or password.'], 401);
     }
+    $role = (string)($row['role'] ?? 'super_admin');
+    if (!in_array($role, zu_roles(), true)) $role = 'super_admin';
     zu_session_start();
     session_regenerate_id(true);
     $_SESSION['admin_id'] = (int)$row['id'];
     $_SESSION['csrf'] = bin2hex(random_bytes(24));
-    zu_json(['ok' => true, 'username' => $username, 'csrf' => $_SESSION['csrf']]);
+    zu_json(['ok' => true, 'username' => $username, 'role' => $role, 'csrf' => $_SESSION['csrf']]);
 } catch (Throwable $e) {
     zu_json(['ok' => false, 'error' => 'Login unavailable right now.'], 500);
 }

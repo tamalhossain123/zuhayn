@@ -5,9 +5,12 @@ require dirname(__DIR__) . '/bootstrap.php';
 $id = zu_require_admin();
 try {
     $db = zu_db();
-    $st = $db->prepare('SELECT username FROM admins WHERE id = ?');
+    zu_migrate($db);
+    $st = $db->prepare('SELECT username, role FROM admins WHERE id = ?');
     $st->execute([$id]);
     $row = $st->fetch();
+    $role = $row ? (string)($row['role'] ?? 'super_admin') : 'super_admin';
+    if (!in_array($role, zu_roles(), true)) $role = 'super_admin';
     $weekSql = (zu_config()['db_driver'] ?? 'mysql') === 'sqlite'
         ? "SELECT COUNT(*) c FROM leads WHERE created_at >= datetime('now', '-7 days')"
         : 'SELECT COUNT(*) c FROM leads WHERE created_at >= (NOW() - INTERVAL 7 DAY)';
@@ -25,7 +28,7 @@ try {
         'industries' => (int)$db->query('SELECT COUNT(*) c FROM industries')->fetch()['c'],
         'faqs' => (int)$db->query('SELECT COUNT(*) c FROM faqs')->fetch()['c'],
     ];
-    zu_json(['ok' => true, 'username' => $row ? $row['username'] : '', 'csrf' => zu_csrf_token(), 'counts' => $counts]);
+    zu_json(['ok' => true, 'username' => $row ? $row['username'] : '', 'role' => $role, 'csrf' => zu_csrf_token(), 'counts' => $counts]);
 } catch (Throwable $e) {
     zu_json(['ok' => false, 'error' => 'Unavailable.'], 500);
 }

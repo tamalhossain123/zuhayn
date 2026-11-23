@@ -88,6 +88,67 @@ function zu_require_admin(): int
     return $id;
 }
 
+/* ---------------- roles ----------------
+   super_admin: everything, including user management.
+   admin: leads, content and settings (no user management).
+   editor: website content only (no leads, settings or users). */
+
+function zu_roles(): array
+{
+    return ['super_admin', 'admin', 'editor'];
+}
+
+function zu_role_label(string $role): string
+{
+    return ['super_admin' => 'Super Admin', 'admin' => 'Admin', 'editor' => 'Editor'][$role] ?? 'Admin';
+}
+
+// Adds the admins.role column on databases created before roles existed.
+// Existing accounts become super_admin, which matches their old full access.
+function zu_migrate(PDO $db): void
+{
+    static $done = false;
+    if ($done) return;
+    $done = true;
+    try {
+        $driver = (string)(zu_config()['db_driver'] ?? 'mysql');
+        if ($driver === 'sqlite') {
+            $cols = $db->query('PRAGMA table_info(admins)')->fetchAll();
+            $has = false;
+            foreach ($cols as $c) if (($c['name'] ?? '') === 'role') $has = true;
+            if (!$has) $db->exec("ALTER TABLE admins ADD COLUMN role VARCHAR(24) NOT NULL DEFAULT 'super_admin'");
+        } else {
+            $n = (int)$db->query("SELECT COUNT(*) c FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'admins' AND COLUMN_NAME = 'role'")->fetch()['c'];
+            if ($n === 0) $db->exec("ALTER TABLE admins ADD COLUMN role VARCHAR(24) NOT NULL DEFAULT 'super_admin'");
+        }
+    } catch (Throwable $e) {
+        // The admins table may not exist yet (before setup); nothing to do.
+    }
+}
+
+function zu_admin_role(): string
+{
+    $id = zu_admin_id();
+    if ($id === null) return '';
+    $db = zu_db();
+    zu_migrate($db);
+    $st = $db->prepare('SELECT role FROM admins WHERE id = ?');
+    $st->execute([$id]);
+    $row = $st->fetch();
+    $role = $row ? (string)($row['role'] ?? '') : '';
+    return in_array($role, zu_roles(), true) ? $role : 'super_admin';
+}
+
+function zu_require_role(array $roles): string
+{
+    zu_require_admin();
+    $role = zu_admin_role();
+    if (!in_array($role, $roles, true)) {
+        zu_json(['ok' => false, 'error' => 'Your role does not allow this.'], 403);
+    }
+    return $role;
+}
+
 function zu_csrf_token(): string
 {
     zu_session_start();
