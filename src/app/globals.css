@@ -483,12 +483,11 @@ footer { background: #051423; padding-top: 76px; overflow: hidden; }
 .ff-card .ff-num2 { position: absolute; left: 22px; bottom: 20px; z-index: 2; font-size: clamp(2.4rem, 3.6vw, 3.4rem); font-weight: 800; line-height: 1; }
 .ff-card .ff-num2 .suffix { color: #bdbdbd; }
 .ff-card .ff-arrow { position: absolute; right: 22px; bottom: 24px; z-index: 2; font-size: 24px; font-weight: 400; }
-.ff-card.off-1 { margin-top: 0; } .ff-card.off-2 { margin-top: 46px; }
-.ff-card.off-3 { margin-top: 92px; } .ff-card.off-4 { margin-top: 46px; }
+/* All stat cards stay one size in a single aligned row (Tamal's order,
+   2026-11-23): the old staggered margin-top offsets were removed. */
 @media (max-width: 1080px) {
   .about-show { grid-template-columns: 1fr; }
   .ff-cards { grid-template-columns: repeat(2, 1fr); }
-  .ff-card.off-2, .ff-card.off-3, .ff-card.off-4 { margin-top: 0; }
   .ff-card { min-height: 240px; }
 }
 @media (max-width: 640px) { .ff-cards { grid-template-columns: 1fr; } .statement { font-size: 1.45rem; } .about-label { padding-top: 4px; } }
